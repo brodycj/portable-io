@@ -4,9 +4,13 @@ version = "0.0.1-dev"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/brodycj/portable-io"
+description = """"
+A subset of Rust `std::io` functionality supported for `no-std`.
+"""
 
 [dependencies]
-# TODO
+libc = { version = "0.2.169", default-features = false }
 
 [features]
-# TODO
+# TODO: finer-grained feature options
+alloc = []
