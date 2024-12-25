@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use core::convert::From;
 use core::error;
 use core::fmt;
