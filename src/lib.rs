@@ -11,6 +11,9 @@
 #![feature(ptr_as_uninit)]
 #![feature(slice_internals)]
 #![feature(specialization)]
+// XXX XXX
+#![allow(stable_features)]
+#![feature(error_in_core)]
 
 #[cfg(test)]
 mod tests;
