@@ -53,7 +53,6 @@ compile_error!("`alloc` feature is currently required for this library to build"
 #[cfg(not(any(doc,portable_io_unstable_all)))]
 compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
 
-
 struct Guard<'a> {
     buf: &'a mut Vec<u8>,
     len: usize,
