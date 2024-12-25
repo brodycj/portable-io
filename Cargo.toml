@@ -14,3 +14,6 @@ libc = { version = "0.2.169", default-features = false }
 [features]
 # TODO: finer-grained feature options
 alloc = []
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(portable_io_unstable_all)'] }
