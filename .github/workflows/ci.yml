@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: --cfg portable_io_unstable_all
+
+jobs:
+  # General TODO items:
+  # - try Rust clippy (should avoid all warnings)
+  # - check for build & test warnings
+  # - enforce consistent Rust fmt (if possible without affecting too much code)
+  build:
+    runs-on: ubuntu-latest
+    # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
+    steps:
+    - uses: actions/checkout@v4
+    - run: rustup default nightly
+    - name: Build
+      run: cargo build --all-features --verbose
+    - name: Run tests
+      run: cargo test --all-features --verbose
+    # TODO: IMPROVE CONSISTENCY WITH STEPS ABOVE
+    - run: cargo doc --all-features
+    # TEST with Rust nightly back to July 2024 - TODO USE MATRIX FOR THIS
+    - run: rustup default nightly-2024-07-01
+    - run: cargo test --all-features
