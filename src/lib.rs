@@ -1099,8 +1099,6 @@ pub trait Seek {
     ///
     /// Rewinding can fail, for example because it might involve flushing a buffer.
     ///
-    /// # Example
-    ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
     fn rewind(&mut self) -> Result<()> {
         self.seek(SeekFrom::Start(0))?;
