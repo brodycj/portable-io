@@ -1018,9 +1018,6 @@ pub trait Write {
     ///
     /// This function will return any I/O error reported while formatting.
     ///
-    /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
-    /// # Example code
-    ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
     fn write_fmt(&mut self, fmt: fmt::Arguments<'_>) -> Result<()> {
         // Create a shim which translates a Write to a fmt::Write and saves
