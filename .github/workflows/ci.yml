@@ -30,3 +30,7 @@ jobs:
     # TEST with Rust nightly back to July 2024 - TODO USE MATRIX FOR THIS
     - run: rustup default nightly-2024-07-01
     - run: cargo test --all-features
+    # TEST with Rust nightly back to late-February 2024 - TODO USE MATRIX FOR THIS
+    # (using --all-targets to avoid issues with doc tests on older Rust nightly versions)
+    - run: rustup default nightly-2024-02-17
+    - run: cargo test --all-features --all-targets
