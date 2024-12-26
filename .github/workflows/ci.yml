@@ -20,7 +20,7 @@ jobs:
     # XXX TODO MULTI{PLE NIGHTLY VERSIONS
     - run: rustup default nightly
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --all-features --verbose
     - name: Run tests
       run: cargo test --verbose
     # XXX TODO TRY BUILDING DOC
