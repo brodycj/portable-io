@@ -45,7 +45,7 @@ mod readbuf;
 mod sys;
 
 // TODO: support limited features with no use of `alloc` crate
-#[cfg(not(feature = "alloc"))]
+#[cfg(not(any(doc,feature = "alloc")))]
 compile_error!("`alloc` feature is currently required for this library to build");
 
 // TODO: finer-grained unstable features
