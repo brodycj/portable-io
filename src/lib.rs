@@ -52,7 +52,6 @@ compile_error!("`alloc` feature is currently required for this library to build"
 #[cfg(not(any(doc,portable_io_unstable_all)))]
 compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
 
-
 struct Guard<'a> {
     buf: &'a mut Vec<u8>,
     len: usize,
@@ -1018,9 +1017,6 @@ pub trait Write {
     ///
     /// This function will return any I/O error reported while formatting.
     ///
-    /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
-    /// # Example code
-    ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
     fn write_fmt(&mut self, fmt: fmt::Arguments<'_>) -> Result<()> {
         // Create a shim which translates a Write to a fmt::Write and saves
@@ -1101,8 +1097,6 @@ pub trait Seek {
     /// # Errors
     ///
     /// Rewinding can fail, for example because it might involve flushing a buffer.
-    ///
-    /// # Example
     ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
     fn rewind(&mut self) -> Result<()> {
