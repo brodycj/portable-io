@@ -27,10 +27,22 @@ jobs:
       run: cargo test --all-features --verbose
     # TODO: IMPROVE CONSISTENCY WITH STEPS ABOVE
     - run: cargo doc --all-features
-    # TEST with Rust nightly back to July 2024 - TODO USE MATRIX FOR THIS
-    - run: rustup default nightly-2024-07-01
-    - run: cargo test --all-features
-    # TEST with Rust nightly back to late-February 2024 - TODO USE MATRIX FOR THIS
-    # (using --all-targets to avoid issues with doc tests on older Rust nightly versions)
+    # TODO: USE MATRIX FOR TESTING WITH OTHER RUST NIGHTLY VERSIONS
+    - run: git clean -dfX # QUICK WORKAROUND to remove Cargo lock file version 4
+    # (NEED TO USE `--all-targets` to avoid issues with doc tests on some older Rust nightly versions below)
+    # TEST with MSRV (nightly)
+    - run: rustup default nightly-2022-08-24
+    - run: cargo test --all-features --all-targets
+    # TEST with Rust nightly from mid-2023
+    - run: rustup default nightly-2023-07-01
+    - run: cargo test --all-features --all-targets
+    # TEST with Rust nightly from late-February 2024 to check for correct rustversion conditions
     - run: rustup default nightly-2024-02-17
     - run: cargo test --all-features --all-targets
+    - run: rustup default nightly-2024-02-16
+    - run: cargo test --all-features --all-targets
+    - run: rustup default nightly-2024-02-15
+    - run: cargo test --all-features --all-targets
+    # TEST with a more recent Rust nightly version (no need for --all-targets)
+    - run: rustup default nightly-2024-07-01
+    - run: cargo test --all-features
