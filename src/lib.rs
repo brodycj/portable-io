@@ -12,6 +12,7 @@
 #![feature(slice_internals)]
 #![feature(specialization)]
 #![feature(error_in_core)]
+#![feature(mixed_integer_ops)]
 
 #[cfg(test)]
 mod tests;

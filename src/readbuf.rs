@@ -221,9 +221,9 @@ impl<'a> ReadBuf<'a> {
 
         // SAFETY: we do not de-initialize any of the elements of the slice
         unsafe {
-            // ADAPTED TO BUILD WITH RECENT RUST NIGHTLY:
-            MaybeUninit::copy_from_slice(&mut self.unfilled_mut()[..buf.len()], buf);
-        }
+            // ADAPTED with WORKAROUND fn to support Rust nightly -> 2022-08-24
+            write_unfilled_buf(self, buf);
+        };
 
         // SAFETY: We just added the entire contents of buf to the filled section.
         unsafe { self.assume_init(buf.len()) }
@@ -241,4 +241,16 @@ impl<'a> ReadBuf<'a> {
     pub fn initialized_len(&self) -> usize {
         self.initialized
     }
+}
+
+// WORKAROUND fn to support Rust nightly -> 2022-08-24
+#[rustversion::since(2024-02-16)]
+#[inline]
+unsafe fn write_unfilled_buf(this: &mut ReadBuf, buf: &[u8]) {
+    MaybeUninit::copy_from_slice(&mut this.unfilled_mut()[..buf.len()], buf);
+}
+#[rustversion::before(2024-02-16)]
+#[inline]
+unsafe fn write_unfilled_buf(this: &mut ReadBuf, buf: &[u8]) {
+    MaybeUninit::write_slice(&mut this.unfilled_mut()[..buf.len()], buf);
 }
