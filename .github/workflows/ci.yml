@@ -16,7 +16,14 @@ jobs:
   # - check for build & test warnings
   # - enforce consistent Rust fmt (if possible without affecting too much code)
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
+          # - windows-latest
+    runs-on: ${{ matrix.os }}
     # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
     steps:
     - uses: actions/checkout@v4
