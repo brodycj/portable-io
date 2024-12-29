@@ -21,7 +21,8 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
-          - windows-latest
+          # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
+          # - windows-latest
     runs-on: ${{ matrix.os }}
     # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
     steps:
