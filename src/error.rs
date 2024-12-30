@@ -39,6 +39,7 @@ impl fmt::Debug for Error {
 }
 
 enum Repr {
+    #[cfg(feature = "os-error")]
     Os(i32),
     Simple(ErrorKind),
     // &str is a fat pointer, but &&str is a thin pointer.
@@ -389,16 +390,7 @@ impl Error {
         Self { repr: Repr::SimpleMessage(kind, message) }
     }
 
-    /// Returns an error representing the last OS error which occurred.
-    ///
-    /// This function reads the value of `errno` for the target platform (e.g.
-    /// `GetLastError` on Windows) and will return a corresponding instance of
-    /// [`Error`] for the error code.
-    ///
-    /// This should be called immediately after a call to a platform function,
-    /// otherwise the state of the error value is indeterminate. In particular,
-    /// other standard library functions may call platform functions that may
-    /// (or may not) reset the error value even if they succeed.
+    /// NOT IMPLEMENTED - WILL PANIC WITH "MISSING FUNCTIONALITY" MESSAGE
     ///
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
@@ -410,6 +402,7 @@ impl Error {
     /// let os_error = Error::last_os_error();
     /// println!("last OS error: {:?}", os_error);
     /// ```
+    #[cfg(feature = "os-error")]
     #[must_use]
     #[inline]
     pub fn last_os_error() -> Error {
@@ -420,6 +413,7 @@ impl Error {
     /// Creates a new instance of an [`Error`] from a particular OS error code.
     ///
     /// <!-- TODO ADD EXAMPLE CODE -->
+    #[cfg(feature = "os-error")]
     #[must_use]
     #[inline]
     pub fn from_raw_os_error(code: i32) -> Error {
@@ -438,8 +432,7 @@ impl Error {
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
     ///
-    /// <!-- TODO FIX & REMOVE no_run here -->
-    /// ```no_run
+    /// ```
     /// use portable_io::{Error, ErrorKind};
     ///
     /// fn print_os_error(err: &Error) {
@@ -452,7 +445,8 @@ impl Error {
     ///
     /// fn main() {
     ///     // Will print "raw OS error: ...".
-    ///     print_os_error(&Error::last_os_error());
+    ///     // (only compiles with `os-error` feature enabled)
+    ///     // print_os_error(&Error::last_os_error());
     ///     // Will print "Not an OS error".
     ///     print_os_error(&Error::new(ErrorKind::Other, "oh no!"));
     /// }
@@ -461,6 +455,7 @@ impl Error {
     #[inline]
     pub fn raw_os_error(&self) -> Option<i32> {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(i) => Some(i),
             Repr::Custom(..) => None,
             Repr::Simple(..) => None,
@@ -478,8 +473,7 @@ impl Error {
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
     ///
-    /// <!-- TODO FIX & REMOVE no_run here -->
-    /// ```no_run
+    /// ```
     /// use portable_io::{Error, ErrorKind};
     ///
     /// fn print_error(err: &Error) {
@@ -492,7 +486,8 @@ impl Error {
     ///
     /// fn main() {
     ///     // Will print "No inner error".
-    ///     print_error(&Error::last_os_error());
+    ///     // (only compiles with `os-error` feature enabled)
+    ///     // print_error(&Error::last_os_error());
     ///     // Will print "Inner error: ...".
     ///     print_error(&Error::new(ErrorKind::Other, "oh no!"));
     /// }
@@ -501,6 +496,7 @@ impl Error {
     #[inline]
     pub fn get_ref(&self) -> Option<&(dyn error::Error + Send + Sync + 'static)> {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
@@ -519,8 +515,7 @@ impl Error {
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
     ///
-    /// <!-- TODO FIX & REMOVE no_run here -->
-    /// ```no_run
+    /// ```
     /// use portable_io::{Error, ErrorKind};
     /// use core::{error, fmt};
     /// use core::fmt::Display;
@@ -567,7 +562,8 @@ impl Error {
     ///
     /// fn main() {
     ///     // Will print "No inner error".
-    ///     print_error(&change_error(Error::last_os_error()));
+    ///     // (only compiles with `os-error` feature enabled)
+    ///     // print_error(&change_error(Error::last_os_error()));
     ///     // Will print "Inner error: ...".
     ///     print_error(&change_error(Error::new(ErrorKind::Other, MyError::new())));
     /// }
@@ -576,6 +572,7 @@ impl Error {
     #[inline]
     pub fn get_mut(&mut self) -> Option<&mut (dyn error::Error + Send + Sync + 'static)> {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
@@ -593,8 +590,7 @@ impl Error {
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
     ///
-    /// <!-- TODO FIX & REMOVE no_run here -->
-    /// ```no_run
+    /// ```
     /// use portable_io::{Error, ErrorKind};
     ///
     /// fn print_error(err: Error) {
@@ -607,7 +603,8 @@ impl Error {
     ///
     /// fn main() {
     ///     // Will print "No inner error".
-    ///     print_error(Error::last_os_error());
+    ///     // (only compiles with `os-error` feature enabled)
+    ///     // print_error(Error::last_os_error());
     ///     // Will print "Inner error: ...".
     ///     print_error(Error::new(ErrorKind::Other, "oh no!"));
     /// }
@@ -616,6 +613,7 @@ impl Error {
     #[inline]
     pub fn into_inner(self) -> Option<Box<dyn error::Error + Send + Sync>> {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
@@ -628,8 +626,8 @@ impl Error {
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
     ///
-    /// <!-- TODO FIX & REMOVE no_run here -->
-    /// ```no_run
+    /// <!-- TODO ADD ANOTHER print_error() example in the code below -->
+    /// ```
     /// use portable_io::{Error, ErrorKind};
     ///
     /// fn print_error(err: Error) {
@@ -637,8 +635,9 @@ impl Error {
     /// }
     ///
     /// fn main() {
-    ///     // Will print "Uncategorized".
-    ///     print_error(Error::last_os_error());
+    ///     // Will panic (MISSING FUNCTIONALITY) - SHOULD print "Uncategorized".
+    ///     // (only compiles with `os-error` feature enabled)
+    ///     // print_error(Error::last_os_error());
     ///     // Will print "AddrInUse".
     ///     print_error(Error::new(ErrorKind::AddrInUse, "oh no!"));
     /// }
@@ -648,6 +647,7 @@ impl Error {
     pub fn kind(&self) -> ErrorKind {
         match self.repr {
             // TODO ADD MISSING FUNCTIONALITY
+            #[cfg(feature = "os-error")]
             Repr::Os(_) => panic!("MISSING FUNCTIONALITY"),
             Repr::Custom(ref c) => c.kind,
             Repr::Simple(kind) => kind,
@@ -660,6 +660,7 @@ impl fmt::Debug for Repr {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
             // TODO ADD MISSING FUNCTIONALITY
+            #[cfg(feature = "os-error")]
             Repr::Os(_) => panic!("MISSING FUNCTIONALITY"),
             Repr::Custom(ref c) => fmt::Debug::fmt(&c, fmt),
             Repr::Simple(kind) => fmt.debug_tuple("Kind").field(&kind).finish(),
@@ -673,6 +674,7 @@ impl fmt::Debug for Repr {
 impl fmt::Display for Error {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(code) => {
                 // TODO ADD MISSING FUNCTIONALITY
                 panic!("MISSING FUNCTIONALITY")
@@ -688,7 +690,9 @@ impl error::Error for Error {
     #[allow(deprecated, deprecated_in_future)]
     fn description(&self) -> &str {
         match self.repr {
-            Repr::Os(..) | Repr::Simple(..) => self.kind().as_str(),
+            #[cfg(feature = "os-error")]
+            Repr::Os(..) => self.kind().as_str(),
+            Repr::Simple(..) => self.kind().as_str(),
             Repr::SimpleMessage(_, &msg) => msg,
             Repr::Custom(ref c) => c.error.description(),
         }
@@ -697,6 +701,7 @@ impl error::Error for Error {
     #[allow(deprecated)]
     fn cause(&self) -> Option<&dyn error::Error> {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
@@ -706,6 +711,7 @@ impl error::Error for Error {
 
     fn source(&self) -> Option<&(dyn error::Error + 'static)> {
         match self.repr {
+            #[cfg(feature = "os-error")]
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,

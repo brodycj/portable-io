@@ -15,3 +15,5 @@ rustversion = "1.0.19"
 [features]
 # TODO: finer-grained feature options
 alloc = []
+# TODO DOCUMENT AS UNSTABLE FEATURE with some MISSING FUNCTIONALITY (with known panics)
+os-error = []
