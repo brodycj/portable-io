@@ -38,21 +38,17 @@ jobs:
           - rust: nightly-2024-02-15
             test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
-    # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
     steps:
-    - uses: actions/checkout@v4
-    - run: rustup default ${{ matrix.rust }}
-    # XXX TODO SEPARATE BUILD JOB
-    - name: Build
-      run: cargo build --all-features ${{ matrix.test-options }} --verbose
-    - name: Run tests - all features
-      run: cargo test --all-features ${{ matrix.test-options }} --verbose
-    - name: Run tests - limited feature(s) (alloc only)
-      run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+      - uses: actions/checkout@v4
+      - run: rustup default ${{ matrix.rust }}
+      # TODO SEPARATE BUILD JOB, CHECK FOR NO BUILD WARNINGS
+      - run: cargo build --all-features ${{ matrix.test-options }} --verbose
+      - run: cargo test --all-features ${{ matrix.test-options }} --verbose
+      - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
 
   doc:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - run: rustup default nightly
-    - run: cargo doc --all-features
+      - uses: actions/checkout@v4
+      - run: rustup default nightly
+      - run: cargo doc --all-features
