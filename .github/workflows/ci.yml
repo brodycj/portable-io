@@ -20,12 +20,11 @@ jobs:
       matrix:
         include:
           - rust: nightly
-            # XXX TODO:
-            # doc-tests: true
           - os: macos-latest
             rust: nightly
-            # XXX TODO:
-            # doc-tests: true
+          - rust: nightly-2024-07-01
+          - rust: nightly-2024-02-15
+            test-options: --all-targets # SKIP doc tests
           # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
           # - os: windows-latest
           #   ...
@@ -37,11 +36,11 @@ jobs:
     - run: rustup default ${{ matrix.rust }}
     # XXX TODO SEPARATE BUILD JOB
     - name: Build
-      run: cargo build --all-features --verbose
+      run: cargo build --all-features ${{ matrix.test-options }} --verbose
     - name: Run tests - all features
-      run: cargo test --all-features --verbose
+      run: cargo test --all-features ${{ matrix.test-options }} --verbose
     - name: Run tests - limited feature(s) (alloc only)
-      run: cargo test --features alloc --verbose
+      run: cargo test --features alloc ${{ matrix.test-options }} --verbose
 
   doc:
     runs-on: ubuntu-latest
@@ -67,8 +66,6 @@ jobs:
     - run: cargo test --all-features --all-targets
     - run: rustup default nightly-2024-02-16
     - run: cargo test --all-features --all-targets
-    - run: rustup default nightly-2024-02-15
-    - run: cargo test --all-features --all-targets
-    # TEST with a more recent Rust nightly version (no need for --all-targets)
-    - run: rustup default nightly-2024-07-01
-    - run: cargo test --all-features
+    # XXX MOVED:
+    # - run: rustup default nightly-2024-02-15
+    # - run: cargo test --all-features --all-targets
