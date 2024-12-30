@@ -20,15 +20,23 @@ jobs:
       matrix:
         include:
           - rust: nightly
-          - os: macos-latest
-            rust: nightly
-          - rust: nightly-2024-07-01
-          - rust: nightly-2024-02-15
-            test-options: --all-targets # SKIP doc tests
           # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
           # - os: windows-latest
           #   ...
-          # XXX TODO: OTHER RUST NIGHTLY ENTRIES FROM BELOW
+          - os: macos-latest
+            rust: nightly
+          - rust: nightly-2024-07-01
+          - rust: nightly-2023-07-01
+            test-options: --all-targets # SKIP doc tests
+          - rust: nightly-2022-08-24 # MSRV (nightly)
+            test-options: --all-targets # SKIP doc tests
+          # TEST with these Rust nightly versions to check for correct rustversion conditions in `src/readbuf.rs`
+          - rust: nightly-2024-02-17
+            test-options: --all-targets # SKIP doc tests
+          - rust: nightly-2024-02-16
+            test-options: --all-targets # SKIP doc tests
+          - rust: nightly-2024-02-15
+            test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
     steps:
@@ -48,24 +56,3 @@ jobs:
     - uses: actions/checkout@v4
     - run: rustup default nightly
     - run: cargo doc --all-features
-
-  # XXX TODO INTEGRATE WITH MATRIX ABOVE
-  other:
-    runs-on: ubuntu-latest
-    # TODO: USE MATRIX FOR TESTING WITH OTHER RUST NIGHTLY VERSIONS
-    steps:
-    - uses: actions/checkout@v4
-    # TEST with MSRV (nightly)
-    - run: rustup default nightly-2022-08-24
-    - run: cargo test --all-features --all-targets
-    # TEST with Rust nightly from mid-2023
-    - run: rustup default nightly-2023-07-01
-    - run: cargo test --all-features --all-targets
-    # TEST with Rust nightly from late-February 2024 to check for correct rustversion conditions
-    - run: rustup default nightly-2024-02-17
-    - run: cargo test --all-features --all-targets
-    - run: rustup default nightly-2024-02-16
-    - run: cargo test --all-features --all-targets
-    # XXX MOVED:
-    # - run: rustup default nightly-2024-02-15
-    # - run: cargo test --all-features --all-targets
