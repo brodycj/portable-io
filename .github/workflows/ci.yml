@@ -30,8 +30,10 @@ jobs:
     - run: rustup default nightly
     - name: Build
       run: cargo build --all-features --verbose
-    - name: Run tests
+    - name: Run tests - all features
       run: cargo test --all-features --verbose
+    - name: Run tests - limited feature(s) (alloc only)
+      run: cargo test --features alloc --verbose
     # TODO: IMPROVE CONSISTENCY WITH STEPS ABOVE
     - run: cargo doc --all-features
     # TODO: USE MATRIX FOR TESTING WITH OTHER RUST NIGHTLY VERSIONS
