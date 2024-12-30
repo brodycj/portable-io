@@ -51,8 +51,9 @@ jobs:
 
   # XXX TODO INTEGRATE WITH MATRIX ABOVE
   other:
-    - runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     # TODO: USE MATRIX FOR TESTING WITH OTHER RUST NIGHTLY VERSIONS
+    steps:
     # TEST with MSRV (nightly)
     - run: rustup default nightly-2022-08-24
     - run: cargo test --all-features --all-targets
