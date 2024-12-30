@@ -18,27 +18,41 @@ jobs:
   build:
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
+        include:
+          - rust: nightly
+            # XXX TODO:
+            # doc-tests: true
+          - os: macos-latest
+            rust: nightly
+            # XXX TODO:
+            # doc-tests: true
           # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
-          # - windows-latest
+          # - os: windows-latest
+          #   ...
+          # XXX TODO: OTHER RUST NIGHTLY ENTRIES FROM BELOW
     runs-on: ${{ matrix.os }}
     # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
     steps:
     - uses: actions/checkout@v4
-    - run: rustup default nightly
+    - run: rustup default ${{ matrix.rust }}
+    # XXX TODO SEPARATE BUILD JOB
     - name: Build
       run: cargo build --all-features --verbose
     - name: Run tests - all features
       run: cargo test --all-features --verbose
     - name: Run tests - limited feature(s) (alloc only)
       run: cargo test --features alloc --verbose
+
+  doc:
+    runs-on: ubuntu-latest
+    steps:
     # TODO: IMPROVE CONSISTENCY WITH STEPS ABOVE
     - run: cargo doc --all-features
+
+  # XXX TODO INTEGRATE WITH MATRIX ABOVE
+  other:
+    - runs-on: ubuntu-latest
     # TODO: USE MATRIX FOR TESTING WITH OTHER RUST NIGHTLY VERSIONS
-    - run: git clean -dfX # QUICK WORKAROUND to remove Cargo lock file version 4
-    # (NEED TO USE `--all-targets` to avoid issues with doc tests on some older Rust nightly versions below)
     # TEST with MSRV (nightly)
     - run: rustup default nightly-2022-08-24
     - run: cargo test --all-features --all-targets
