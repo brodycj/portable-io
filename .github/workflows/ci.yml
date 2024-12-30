@@ -30,7 +30,7 @@ jobs:
           # - os: windows-latest
           #   ...
           # XXX TODO: OTHER RUST NIGHTLY ENTRIES FROM BELOW
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     # TODO: IMPROVE CONSISTENCY OF INDENTING WITH INDENTING OF push branches above
     steps:
     - uses: actions/checkout@v4
@@ -46,7 +46,8 @@ jobs:
   doc:
     runs-on: ubuntu-latest
     steps:
-    # TODO: IMPROVE CONSISTENCY WITH STEPS ABOVE
+    - uses: actions/checkout@v4
+    - run: rustup default nightly
     - run: cargo doc --all-features
 
   # XXX TODO INTEGRATE WITH MATRIX ABOVE
@@ -54,6 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     # TODO: USE MATRIX FOR TESTING WITH OTHER RUST NIGHTLY VERSIONS
     steps:
+    - uses: actions/checkout@v4
     # TEST with MSRV (nightly)
     - run: rustup default nightly-2022-08-24
     - run: cargo test --all-features --all-targets
