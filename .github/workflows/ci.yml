@@ -15,16 +15,16 @@ jobs:
   # - try Rust clippy (should avoid all warnings)
   # - check for build & test warnings
   # - enforce consistent Rust fmt (if possible without affecting too much code)
-  build:
+  test:
     strategy:
       matrix:
         include:
           - rust: nightly
+          - os: macos-latest
+            rust: nightly
           # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
           # - os: windows-latest
           #   ...
-          - os: macos-latest
-            rust: nightly
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
             test-options: --all-targets # SKIP doc tests
@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
-      # TODO SEPARATE BUILD JOB, CHECK FOR NO BUILD WARNINGS
+      # TODO: SEPARATE BUILD JOB, CHECK FOR NO BUILD WARNINGS
       - run: cargo build --all-features ${{ matrix.test-options }} --verbose
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
