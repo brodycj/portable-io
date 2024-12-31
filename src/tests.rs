@@ -10,6 +10,7 @@ use crate::cmp::{self, min};
 use crate::{self as io, IoSlice, IoSliceMut};
 use crate::{BufRead, Read, Seek, Write};
 
+#[cfg(feature = "alloc")]
 #[test]
 #[cfg_attr(target_os = "emscripten", ignore)]
 fn read_until() {
@@ -30,6 +31,7 @@ fn read_until() {
     assert_eq!(v, []);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn split() {
     let buf = Cursor::new(&b"12"[..]);
@@ -44,6 +46,7 @@ fn split() {
     assert!(s.next().is_none());
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn read_line() {
     let mut buf = Cursor::new(&b"12"[..]);
@@ -63,6 +66,7 @@ fn read_line() {
     assert_eq!(v, "");
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn lines() {
     let buf = Cursor::new(&b"12\r"[..]);
@@ -87,6 +91,7 @@ fn buf_read_has_data_left() {
     assert!(!buf.has_data_left().unwrap());
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn read_to_end() {
     let mut c = Cursor::new(&b""[..]);
@@ -108,6 +113,7 @@ fn read_to_end() {
     assert_eq!(v, data);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn read_to_string() {
     let mut c = Cursor::new(&b""[..]);
@@ -261,6 +267,8 @@ fn take_size_hint() {
 
 // TODO TEST CHAIN SIZE HINT WITH WITH MISSING FUNCTIONALITY: BufReader
 
+// XXX TBD EQUIVALENT TEST W/O STRING - ???
+#[cfg(feature = "alloc")]
 #[test]
 fn chain_zero_length_read_is_not_eof() {
     let a = b"A";
@@ -336,6 +344,7 @@ impl<'a> Read for ExampleSliceReader<'a> {
     }
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_read_to_end_capacity() -> io::Result<()> {
     let input = &b"foo"[..];
