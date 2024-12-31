@@ -14,8 +14,10 @@ rustversion = "1.0.19"
 
 [features]
 # TODO: finer-grained feature options
-alloc = []
+# XXX TBD FEATURE COMBO ???
+alloc = ["readbuf"]
 # TODO: DOCUMENT AS UNSTABLE FEATURE with some MISSING FUNCTIONALITY (with known panics)
 os-error = []
 # TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY
 unix-iovec = ["dep:libc"]
+readbuf = []

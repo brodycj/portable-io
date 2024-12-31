@@ -36,12 +36,14 @@ use alloc::{boxed::Box, string::String, vec::Vec};
 // TODO: port & export more items from Rust std::io
 pub use self::cursor::Cursor;
 pub use self::error::{Error, ErrorKind, Result};
+#[cfg(feature = "readbuf")]
 pub use self::readbuf::ReadBuf;
 
 mod cursor;
 mod error;
 mod impls;
 pub mod prelude;
+#[cfg(feature = "readbuf")]
 mod readbuf;
 
 mod sys;
@@ -227,6 +229,7 @@ pub(crate) fn default_read_exact<R: Read + ?Sized>(this: &mut R, mut buf: &mut [
     }
 }
 
+#[cfg(feature = "readbuf")]
 pub(crate) fn default_read_buf<F>(read: F, buf: &mut ReadBuf<'_>) -> Result<()>
 where
     F: FnOnce(&mut [u8]) -> Result<usize>,
@@ -445,6 +448,7 @@ pub trait Read {
     /// with uninitialized buffers. The new data will be appended to any existing contents of `buf`.
     ///
     /// The default implementation delegates to `read`.
+    #[cfg(feature = "readbuf")]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         default_read_buf(|b| self.read(b), buf)
     }
@@ -453,6 +457,7 @@ pub trait Read {
     ///
     /// This is equivalent to the [`read_exact`](Read::read_exact) method, except that it is passed a [`ReadBuf`] rather than `[u8]` to
     /// allow use with uninitialized buffers.
+    #[cfg(feature = "readbuf")]
     fn read_buf_exact(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         while buf.remaining() > 0 {
             let prev_filled = buf.filled().len();
@@ -1657,6 +1662,7 @@ impl<T: Read> Read for Take<T> {
         Ok(n)
     }
 
+    #[cfg(feature = "readbuf")]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {
