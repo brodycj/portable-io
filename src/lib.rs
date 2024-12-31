@@ -19,6 +19,7 @@
 mod tests;
 
 use core::cmp;
+#[cfg(feature = "size-hint")]
 use core::convert::TryInto;
 use core::fmt;
 use core::mem::replace;
@@ -1572,6 +1573,7 @@ impl<T: BufRead, U: BufRead> BufRead for Chain<T, U> {
     }
 }
 
+#[cfg(feature = "size-hint")]
 impl<T, U> SizeHint for Chain<T, U> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1733,6 +1735,7 @@ impl<T: BufRead> BufRead for Take<T> {
     }
 }
 
+#[cfg(feature = "size-hint")]
 impl<T> SizeHint for Take<T> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1774,11 +1777,13 @@ impl<R: Read> Iterator for Bytes<R> {
         }
     }
 
+    #[cfg(feature = "size-hint")]
     fn size_hint(&self) -> (usize, Option<usize>) {
         SizeHint::size_hint(&self.inner)
     }
 }
 
+#[cfg(feature = "size-hint")]
 trait SizeHint {
     fn lower_bound(&self) -> usize;
 
@@ -1789,6 +1794,7 @@ trait SizeHint {
     }
 }
 
+#[cfg(feature = "size-hint")]
 impl<T> SizeHint for T {
     #[inline]
     default fn lower_bound(&self) -> usize {
@@ -1801,6 +1807,7 @@ impl<T> SizeHint for T {
     }
 }
 
+#[cfg(feature = "size-hint")]
 impl<T> SizeHint for &mut T {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1813,6 +1820,7 @@ impl<T> SizeHint for &mut T {
     }
 }
 
+#[cfg(feature = "size-hint")]
 #[cfg(feature = "alloc")]
 impl<T> SizeHint for Box<T> {
     #[inline]
@@ -1826,6 +1834,7 @@ impl<T> SizeHint for Box<T> {
     }
 }
 
+#[cfg(feature = "size-hint")]
 impl SizeHint for &[u8] {
     #[inline]
     fn lower_bound(&self) -> usize {
