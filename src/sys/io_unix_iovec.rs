@@ -1,3 +1,6 @@
+// based on:
+// - https://github.com/rust-lang/rust/blob/1.59.0/library/std/src/sys/unix/io.rs
+
 use core::marker::PhantomData;
 use core::slice;
 

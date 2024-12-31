@@ -22,9 +22,8 @@ jobs:
           - rust: nightly
           - os: macos-latest
             rust: nightly
-          # TODO: RESOLVE KNOWN BUILD FAILURE ON WINDOWS
-          # - os: windows-latest
-          #   ...
+          - os: windows-latest
+            rust: nightly
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
             test-options: --all-targets # SKIP doc tests
@@ -41,10 +40,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
-      # TODO: SEPARATE BUILD JOB, CHECK FOR NO BUILD WARNINGS
-      - run: cargo build --all-features ${{ matrix.test-options }} --verbose
-      - run: cargo test --all-features ${{ matrix.test-options }} --verbose
+      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      - run: cargo build --all-features ${{ matrix.test-options }} --verbose
+        if: (!startsWith(matrix.os, 'windows'))
+      - run: cargo test --all-features ${{ matrix.test-options }} --verbose
+        if: (!startsWith(matrix.os, 'windows'))
 
   doc:
     runs-on: ubuntu-latest
