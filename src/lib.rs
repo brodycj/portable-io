@@ -5,15 +5,15 @@
 #![no_std]
 
 // XXX TBD ??? ???
-#![feature(allocator_api)]
-#![feature(doc_notable_trait)]
-#![feature(maybe_uninit_slice)]
-#![feature(maybe_uninit_write_slice)]
-#![feature(ptr_as_uninit)]
-#![feature(slice_internals)]
+// #![feature(allocator_api)]
+// #![feature(doc_notable_trait)]
+// #![feature(maybe_uninit_slice)]
+// #![feature(maybe_uninit_write_slice)]
+// #![feature(ptr_as_uninit)]
+// #![feature(slice_internals)]
 #![feature(specialization)]
-#![feature(error_in_core)]
-#![feature(mixed_integer_ops)]
+// #![feature(error_in_core)]
+// #![feature(mixed_integer_ops)]
 
 #[cfg(test)]
 mod tests;
@@ -24,7 +24,7 @@ use core::fmt;
 use core::mem::replace;
 use core::ops::{Deref, DerefMut};
 use core::slice;
-use core::slice::memchr;
+// use core::slice::memchr;
 use core::str;
 
 #[cfg(feature = "alloc")]
@@ -35,13 +35,13 @@ use alloc::{boxed::Box, string::String, vec::Vec};
 // TODO: port & export more items from Rust std::io
 pub use self::cursor::Cursor;
 pub use self::error::{Error, ErrorKind, Result};
-pub use self::readbuf::ReadBuf;
+// pub use self::readbuf::ReadBuf;
 
 mod cursor;
 mod error;
 mod impls;
 pub mod prelude;
-mod readbuf;
+// mod readbuf;
 
 mod sys;
 
@@ -226,6 +226,7 @@ pub(crate) fn default_read_exact<R: Read + ?Sized>(this: &mut R, mut buf: &mut [
     }
 }
 
+#[cfg(feature = "readbuf")]
 pub(crate) fn default_read_buf<F>(read: F, buf: &mut ReadBuf<'_>) -> Result<()>
 where
     F: FnOnce(&mut [u8]) -> Result<usize>,
@@ -274,7 +275,7 @@ where
 /// ```
 ///
 /// [`&str`]: prim@str
-#[doc(notable_trait)]
+// #[doc(notable_trait)]
 pub trait Read {
     /// Pull some bytes from this source into the specified buffer, returning
     /// how many bytes were read.
@@ -444,6 +445,7 @@ pub trait Read {
     /// with uninitialized buffers. The new data will be appended to any existing contents of `buf`.
     ///
     /// The default implementation delegates to `read`.
+    #[cfg(feature = "readbuf")]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         default_read_buf(|b| self.read(b), buf)
     }
@@ -452,6 +454,7 @@ pub trait Read {
     ///
     /// This is equivalent to the [`read_exact`](Read::read_exact) method, except that it is passed a [`ReadBuf`] rather than `[u8]` to
     /// allow use with uninitialized buffers.
+    #[cfg(feature = "readbuf")]
     fn read_buf_exact(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         while buf.remaining() > 0 {
             let prev_filled = buf.filled().len();
@@ -833,7 +836,7 @@ impl<'a> Deref for IoSlice<'a> {
 /// `write` in a loop until its entire input has been written.
 ///
 /// [`write_all`]: Write::write_all
-#[doc(notable_trait)]
+// #[doc(notable_trait)]
 pub trait Write {
     /// Write a buffer into this writer, returning how many bytes were written.
     ///
@@ -1656,6 +1659,7 @@ impl<T: Read> Read for Take<T> {
         Ok(n)
     }
 
+    #[cfg(feature = "readbuf")]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {
