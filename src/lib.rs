@@ -5,15 +5,22 @@
 #![no_std]
 
 // XXX TBD ??? ???
-#![feature(allocator_api)]
-#![feature(doc_notable_trait)]
-#![feature(maybe_uninit_slice)]
-#![feature(maybe_uninit_write_slice)]
-#![feature(ptr_as_uninit)]
-#![feature(slice_internals)]
-#![feature(specialization)]
-#![feature(error_in_core)]
-#![feature(mixed_integer_ops)]
+
+#![cfg_attr(
+    portable_io_unstable_all,
+    feature(
+        allocator_api,
+        // XXX TBD ???
+        // doc_notable_trait,
+        maybe_uninit_slice,
+        maybe_uninit_write_slice,
+        ptr_as_uninit,
+        slice_internals,
+        specialization,
+        error_in_core,
+        mixed_integer_ops,
+    )
+)]
 
 #[cfg(test)]
 mod tests;
@@ -54,10 +61,10 @@ mod sys;
 // #[cfg(not(any(doc,feature = "alloc")))]
 // compile_error!("`alloc` feature is currently required for this library to build");
 
-// XXX TBD ???
+// XXX XXX REQUIRE THIS CFG IF ANY XXX FEATURES ARE ENABLED
 // TODO: finer-grained unstable features
-#[cfg(not(any(doc,portable_io_unstable_all)))]
-compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
+// #[cfg(not(any(doc,portable_io_unstable_all)))]
+// compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
 
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
@@ -279,7 +286,8 @@ where
 /// ```
 ///
 /// [`&str`]: prim@str
-#[doc(notable_trait)]
+// XXX TBD ???
+// #[doc(notable_trait)]
 pub trait Read {
     /// Pull some bytes from this source into the specified buffer, returning
     /// how many bytes were read.
@@ -840,7 +848,8 @@ impl<'a> Deref for IoSlice<'a> {
 /// `write` in a loop until its entire input has been written.
 ///
 /// [`write_all`]: Write::write_all
-#[doc(notable_trait)]
+// XXX TBD ???
+// #[doc(notable_trait)]
 pub trait Write {
     /// Write a buffer into this writer, returning how many bytes were written.
     ///
