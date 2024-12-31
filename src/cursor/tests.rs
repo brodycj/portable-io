@@ -5,6 +5,7 @@ use alloc::vec::Vec;
 use crate::prelude::*;
 use crate::{Cursor, IoSlice, IoSliceMut, SeekFrom};
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_vec_writer() {
     let mut writer = Vec::new();
@@ -277,6 +278,7 @@ fn test_boxed_slice_reader_vectored() {
     assert_eq!(reader.read(&mut buf).unwrap(), 0);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn read_to_end() {
     let mut reader = Cursor::new(vec![0, 1, 2, 3, 4, 5, 6, 7]);
