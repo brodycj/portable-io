@@ -3,10 +3,10 @@ use core::cmp;
 use core::fmt;
 use core::mem;
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
-use alloc::boxed::Box;
-use alloc::string::String;
-use alloc::vec::Vec;
+#[cfg(feature = "alloc")]
+use alloc::{boxed::Box, string::String, vec::Vec};
 
 use crate::{
     self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, ReadBuf, Seek, SeekFrom, Write,
@@ -36,11 +36,13 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).is_read_vectored()
     }
 
+    #[cfg(feature = "alloc")]
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
+    #[cfg(feature = "alloc")]
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -104,17 +106,20 @@ impl<B: BufRead + ?Sized> BufRead for &mut B {
         (**self).consume(amt)
     }
 
+    #[cfg(feature = "alloc")]
     #[inline]
     fn read_until(&mut self, byte: u8, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_until(byte, buf)
     }
 
+    #[cfg(feature = "alloc")]
     #[inline]
     fn read_line(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_line(buf)
     }
 }
 
+#[cfg(feature = "alloc")]
 impl<R: Read + ?Sized> Read for Box<R> {
     #[inline]
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
@@ -151,6 +156,7 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).read_exact(buf)
     }
 }
+#[cfg(feature = "alloc")]
 impl<W: Write + ?Sized> Write for Box<W> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
@@ -182,6 +188,7 @@ impl<W: Write + ?Sized> Write for Box<W> {
         (**self).write_fmt(fmt)
     }
 }
+#[cfg(feature = "alloc")]
 impl<S: Seek + ?Sized> Seek for Box<S> {
     #[inline]
     fn seek(&mut self, pos: SeekFrom) -> io::Result<u64> {
@@ -193,6 +200,7 @@ impl<S: Seek + ?Sized> Seek for Box<S> {
         (**self).stream_position()
     }
 }
+#[cfg(feature = "alloc")]
 impl<B: BufRead + ?Sized> BufRead for Box<B> {
     #[inline]
     fn fill_buf(&mut self) -> io::Result<&[u8]> {
@@ -290,6 +298,7 @@ impl Read for &[u8] {
         Ok(())
     }
 
+    #[cfg(feature = "alloc")]
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         buf.extend_from_slice(*self);
@@ -365,6 +374,7 @@ impl Write for &mut [u8] {
 
 /// Write is implemented for `Vec<u8>` by appending to the vector.
 /// The vector will grow as needed.
+#[cfg(feature = "alloc")]
 impl<A: Allocator> Write for Vec<u8, A> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {

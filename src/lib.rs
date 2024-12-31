@@ -4,6 +4,7 @@
 
 #![no_std]
 
+// XXX TBD ??? ???
 #![feature(allocator_api)]
 #![feature(doc_notable_trait)]
 #![feature(maybe_uninit_slice)]
@@ -26,10 +27,10 @@ use core::slice;
 use core::slice::memchr;
 use core::str;
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
-use alloc::boxed::Box;
-use alloc::string::String;
-use alloc::vec::Vec;
+#[cfg(feature = "alloc")]
+use alloc::{boxed::Box, string::String, vec::Vec};
 
 // TODO: port & export more items from Rust std::io
 pub use self::cursor::Cursor;
@@ -44,10 +45,12 @@ mod readbuf;
 
 mod sys;
 
+// XXX ??? ???
 // TODO: support limited features with no use of `alloc` crate
-#[cfg(not(any(doc,feature = "alloc")))]
-compile_error!("`alloc` feature is currently required for this library to build");
+// #[cfg(not(any(doc,feature = "alloc")))]
+// compile_error!("`alloc` feature is currently required for this library to build");
 
+// XXX TBD ???
 // TODO: finer-grained unstable features
 #[cfg(not(any(doc,portable_io_unstable_all)))]
 compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
@@ -55,11 +58,13 @@ compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
 
+#[cfg(feature = "alloc")]
 struct Guard<'a> {
     buf: &'a mut Vec<u8>,
     len: usize,
 }
 
+#[cfg(feature = "alloc")]
 impl Drop for Guard<'_> {
     fn drop(&mut self) {
         unsafe {
@@ -87,6 +92,7 @@ impl Drop for Guard<'_> {
 // 2. We're passing a raw buffer to the function `f`, and it is expected that
 //    the function only *appends* bytes to the buffer. We'll get undefined
 //    behavior if existing bytes are overwritten to have non-UTF-8 data.
+#[cfg(feature = "alloc")]
 pub(crate) unsafe fn append_to_string<F>(buf: &mut String, f: F) -> Result<usize>
 where
     F: FnOnce(&mut Vec<u8>) -> Result<usize>,
@@ -109,6 +115,7 @@ where
 // of data to return. Simply tacking on an extra DEFAULT_BUF_SIZE space every
 // time is 4,500 times (!) slower than a default reservation size of 32 if the
 // reader has a very small amount of data to return.
+#[cfg(feature = "alloc")]
 pub(crate) fn default_read_to_end<R: Read + ?Sized>(r: &mut R, buf: &mut Vec<u8>) -> Result<usize> {
     let start_len = buf.len();
     let start_cap = buf.capacity();
@@ -167,6 +174,7 @@ pub(crate) fn default_read_to_end<R: Read + ?Sized>(r: &mut R, buf: &mut Vec<u8>
     }
 }
 
+#[cfg(feature = "alloc")]
 pub(crate) fn default_read_to_string<R: Read + ?Sized>(
     r: &mut R,
     buf: &mut String,
@@ -371,6 +379,7 @@ pub trait Read {
     /// `buf`.
     ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
+    #[cfg(feature = "alloc")]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
         default_read_to_end(self, buf)
     }
@@ -390,6 +399,7 @@ pub trait Read {
     /// [`read_to_end`]: Read::read_to_end
     ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
+    #[cfg(feature = "alloc")]
     fn read_to_string(&mut self, buf: &mut String) -> Result<usize> {
         default_read_to_string(self, buf)
     }
@@ -551,6 +561,7 @@ pub trait Read {
 /// don't have to worry about your buffer being empty or partially full.
 ///
 /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE STDIN -->
+#[cfg(feature = "alloc")]
 pub fn read_to_string<R: Read>(reader: &mut R) -> Result<String> {
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
@@ -1171,6 +1182,7 @@ pub enum SeekFrom {
     Current(i64)
 }
 
+#[cfg(feature = "alloc")]
 fn read_until<R: BufRead + ?Sized>(r: &mut R, delim: u8, buf: &mut Vec<u8>) -> Result<usize> {
     let mut read = 0;
     loop {
@@ -1326,6 +1338,7 @@ pub trait BufRead: Read {
     /// assert_eq!(num_bytes, 0);
     /// assert_eq!(buf, b"");
     /// ```
+    #[cfg(feature = "alloc")]
     fn read_until(&mut self, byte: u8, buf: &mut Vec<u8>) -> Result<usize> {
         read_until(self, byte, buf)
     }
@@ -1389,6 +1402,7 @@ pub trait BufRead: Read {
     /// assert_eq!(num_bytes, 0);
     /// assert_eq!(buf, "");
     /// ```
+    #[cfg(feature = "alloc")]
     fn read_line(&mut self, buf: &mut String) -> Result<usize> {
         // Note that we are not calling the `.read_until` method here, but
         // rather our hardcoded implementation. For more details as to why, see
@@ -1792,6 +1806,7 @@ impl<T> SizeHint for &mut T {
     }
 }
 
+#[cfg(feature = "alloc")]
 impl<T> SizeHint for Box<T> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1829,6 +1844,7 @@ pub struct Split<B> {
     delim: u8,
 }
 
+#[cfg(feature = "alloc")]
 impl<B: BufRead> Iterator for Split<B> {
     type Item = Result<Vec<u8>>;
 
@@ -1858,6 +1874,7 @@ pub struct Lines<B> {
     buf: B,
 }
 
+#[cfg(feature = "alloc")]
 impl<B: BufRead> Iterator for Lines<B> {
     type Item = Result<String>;
 
