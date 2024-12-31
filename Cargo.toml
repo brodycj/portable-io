@@ -9,6 +9,7 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 """
 
 [dependencies]
+# XXX TODO libc OPTIONAL
 libc = { version = "0.2.169", default-features = false }
 rustversion = "1.0.19"
 
@@ -17,3 +18,5 @@ rustversion = "1.0.19"
 alloc = []
 # TODO DOCUMENT AS UNSTABLE FEATURE with some MISSING FUNCTIONALITY (with known panics)
 os-error = []
+# XXX TODO XXX libc
+unix-iovec = []
