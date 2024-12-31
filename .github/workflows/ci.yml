@@ -47,7 +47,6 @@ jobs:
         if: (!startsWith(matrix.os, 'windows'))
       # TODO: MOVE WINDOWS CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
       - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
-        if: startsWith(matrix.os, 'windows')
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
 
   doc:
