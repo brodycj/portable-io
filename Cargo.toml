@@ -20,3 +20,4 @@ os-error = []
 # TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY
 unix-iovec = ["dep:libc"]
 readbuf = []
+size-hint = []
