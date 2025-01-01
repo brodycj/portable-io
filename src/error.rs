@@ -6,7 +6,9 @@ use core::error;
 use core::fmt;
 use core::result;
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
+#[cfg(feature = "alloc")]
 use alloc::boxed::Box;
 
 /// A specialized [`Result`] type for I/O operations.
@@ -44,9 +46,11 @@ enum Repr {
     Simple(ErrorKind),
     // &str is a fat pointer, but &&str is a thin pointer.
     SimpleMessage(ErrorKind, &'static &'static str),
+    #[cfg(feature = "alloc")]
     Custom(Box<Custom>),
 }
 
+#[cfg(feature = "alloc")]
 #[derive(Debug)]
 struct Custom {
     kind: ErrorKind,
@@ -341,6 +345,7 @@ impl Error {
     /// // creating an error without payload
     /// let eof_error = Error::from(ErrorKind::UnexpectedEof);
     /// ```
+    #[cfg(feature = "alloc")]
     pub fn new<E>(kind: ErrorKind, error: E) -> Error
     where
         E: Into<Box<dyn error::Error + Send + Sync>>,
@@ -366,6 +371,7 @@ impl Error {
     /// // errors can also be created from other errors
     /// let custom_error2 = Error::other(custom_error);
     /// ```
+    #[cfg(feature = "alloc")]
     pub fn other<E>(error: E) -> Error
     where
         E: Into<Box<dyn error::Error + Send + Sync>>,
@@ -373,6 +379,7 @@ impl Error {
         Self::_new(ErrorKind::Other, error.into())
     }
 
+    #[cfg(feature = "alloc")]
     fn _new(kind: ErrorKind, error: Box<dyn error::Error + Send + Sync>) -> Error {
         Error { repr: Repr::Custom(Box::new(Custom { kind, error })) }
     }
@@ -457,6 +464,7 @@ impl Error {
         match self.repr {
             #[cfg(feature = "os-error")]
             Repr::Os(i) => Some(i),
+            #[cfg(feature = "alloc")]
             Repr::Custom(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
@@ -500,6 +508,7 @@ impl Error {
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => Some(&*c.error),
         }
     }
@@ -576,6 +585,7 @@ impl Error {
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref mut c) => Some(&mut *c.error),
         }
     }
@@ -609,6 +619,7 @@ impl Error {
     ///     print_error(Error::new(ErrorKind::Other, "oh no!"));
     /// }
     /// ```
+    #[cfg(feature = "alloc")]
     #[must_use = "`self` will be dropped if the result is not used"]
     #[inline]
     pub fn into_inner(self) -> Option<Box<dyn error::Error + Send + Sync>> {
@@ -649,6 +660,7 @@ impl Error {
             // TODO ADD MISSING FUNCTIONALITY
             #[cfg(feature = "os-error")]
             Repr::Os(_) => panic!("MISSING FUNCTIONALITY"),
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => c.kind,
             Repr::Simple(kind) => kind,
             Repr::SimpleMessage(kind, _) => kind,
@@ -662,6 +674,7 @@ impl fmt::Debug for Repr {
             // TODO ADD MISSING FUNCTIONALITY
             #[cfg(feature = "os-error")]
             Repr::Os(_) => panic!("MISSING FUNCTIONALITY"),
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => fmt::Debug::fmt(&c, fmt),
             Repr::Simple(kind) => fmt.debug_tuple("Kind").field(&kind).finish(),
             Repr::SimpleMessage(kind, &message) => {
@@ -679,6 +692,7 @@ impl fmt::Display for Error {
                 // TODO ADD MISSING FUNCTIONALITY
                 panic!("MISSING FUNCTIONALITY")
             }
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => c.error.fmt(fmt),
             Repr::Simple(kind) => write!(fmt, "{}", kind.as_str()),
             Repr::SimpleMessage(_, &msg) => msg.fmt(fmt),
@@ -694,6 +708,7 @@ impl error::Error for Error {
             Repr::Os(..) => self.kind().as_str(),
             Repr::Simple(..) => self.kind().as_str(),
             Repr::SimpleMessage(_, &msg) => msg,
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => c.error.description(),
         }
     }
@@ -705,6 +720,7 @@ impl error::Error for Error {
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => c.error.cause(),
         }
     }
@@ -715,6 +731,7 @@ impl error::Error for Error {
             Repr::Os(..) => None,
             Repr::Simple(..) => None,
             Repr::SimpleMessage(..) => None,
+            #[cfg(feature = "alloc")]
             Repr::Custom(ref c) => c.error.source(),
         }
     }

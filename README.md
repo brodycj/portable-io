@@ -6,7 +6,6 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 
 - Rust nightly toolchain - MSRV: `nightly-2022-08-24`
 - enable `--cfg portable_io_unstable_all` Rust flag
-- enable `alloc` feature
 
 ## major TODO items
 
