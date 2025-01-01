@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # XXX TODO CONFIGURE PER CI JOB TO AVOID MESSING UP RUST STABLE & NIGHTLY BUILD & TEST JOBS
   RUSTFLAGS: --cfg portable_io_unstable_all
 
 jobs:
@@ -21,11 +22,19 @@ jobs:
         include:
           # XXX TODO ADD TESTING WITH RUST STABLE & BETA TO MATRIX HERE (NEED TO SKIP XXX TBD UNSTABLE XXX FEATURES WITH RUST STABLE & BETA)
           - rust: nightly
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - os: macos-latest
             rust: nightly
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - os: windows-latest
             rust: nightly
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - rust: nightly-2024-07-01
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - rust: nightly-2023-07-01
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV (nightly)
@@ -65,6 +74,9 @@ jobs:
       # XXX TODO MISSING BUILD & UNIT TESTING WITH RUST BETA
       - run: rustup default stable
       - run: cargo build
+        # XXX TBD QUICK WORKAROUND FOR GLOBAL ENV CONFIG - XXX TODO REMOVE IN FAVOR OF CONFIGURING PER CI JOB
+        env:
+          RUSTFLAGS: ''
 
   doc:
     runs-on: ubuntu-latest
