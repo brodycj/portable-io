@@ -253,12 +253,14 @@ fn chain_bufread() {
 
 // TODO TEST SIZE HINT WITH WITH MISSING FUNCTIONALITY: empty()
 
+#[cfg(feature = "size-hint")]
 #[test]
 fn slice_size_hint() {
     let size_hint = (&[1, 2, 3]).bytes().size_hint();
     assert_eq!(size_hint, (3, Some(3)));
 }
 
+#[cfg(feature = "size-hint")]
 #[test]
 fn take_size_hint() {
     let size_hint = (&[1, 2, 3]).take(2).bytes().size_hint();
