@@ -11,7 +11,9 @@ extern crate alloc;
 use alloc::{boxed::Box, vec::Vec};
 
 use crate::prelude::*;
-use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, ReadBuf, SeekFrom};
+use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, SeekFrom};
+#[cfg(feature = "readbuf")]
+use crate::ReadBuf;
 
 /// A `Cursor` wraps an in-memory buffer and provides it with a
 /// [`Seek`] implementation.
@@ -271,6 +273,7 @@ where
         Ok(n)
     }
 
+    #[cfg(feature = "readbuf")]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let prev_filled = buf.filled_len();
 

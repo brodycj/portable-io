@@ -11,8 +11,10 @@ extern crate alloc;
 use alloc::{boxed::Box, string::String, vec::Vec};
 
 use crate::{
-    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, ReadBuf, Seek, SeekFrom, Write,
+    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, Seek, SeekFrom, Write,
 };
+#[cfg(feature = "readbuf")]
+use crate::ReadBuf;
 
 // =============================================================================
 // Forwarding implementations
@@ -23,6 +25,7 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).read(buf)
     }
 
+    #[cfg(feature = "readbuf")]
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -251,6 +254,7 @@ impl Read for &[u8] {
         Ok(amt)
     }
 
+    #[cfg(feature = "readbuf")]
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let amt = cmp::min(buf.remaining(), self.len());

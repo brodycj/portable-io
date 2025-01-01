@@ -5,12 +5,16 @@ use alloc::string::{String, ToString};
 use alloc::vec;
 use alloc::vec::Vec;
 
-use crate::{Cursor, ReadBuf, SeekFrom};
+#[cfg(feature = "readbuf")]
+use crate::ReadBuf;
+use crate::{Cursor, SeekFrom};
 use crate::cmp::{self, min};
 use crate::{self as io, IoSlice, IoSliceMut};
 use crate::{BufRead, Read, Seek, Write};
 
+// XXX TBD FEATURE COMBO - ???
 #[cfg(feature = "alloc")]
+#[cfg(feature = "readbuf")]
 #[test]
 #[cfg_attr(target_os = "emscripten", ignore)]
 fn read_until() {
@@ -31,7 +35,9 @@ fn read_until() {
     assert_eq!(v, []);
 }
 
+// XXX TBD FEATURE COMBO - ???
 #[cfg(feature = "alloc")]
+#[cfg(feature = "readbuf")]
 #[test]
 fn split() {
     let buf = Cursor::new(&b"12"[..]);
@@ -168,6 +174,7 @@ fn read_exact_slice() {
     assert_eq!(c, b"9");
 }
 
+#[cfg(feature = "readbuf")]
 #[test]
 fn read_buf_exact() {
     let mut buf = [0; 4];

@@ -48,6 +48,7 @@ jobs:
       # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+      # XXX TODO BUILD & UNIT TESTING WITH FEATURE: readbuf
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
       # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --all-features ${{ matrix.test-options }} --verbose

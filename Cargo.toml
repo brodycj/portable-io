@@ -15,7 +15,10 @@ rustversion = "1.0.19"
 [features]
 # TODO: finer-grained feature options
 # XXX TODO FIX DOCUMENTATION OF ALLOC FEATURE LOCALLY & ON docs.rs
-alloc = []
+# XXX TBD FEATURE DEPENDENCY - alloc -> readbuf - ??? ???
+alloc = ["readbuf"]
+# XXX TODO FIX DOCUMENTATION OF THIS UNSTABLE FEATURE:
+readbuf = []
 # TODO: DOCUMENT AS UNSTABLE (POSSIBLY UNSUPPORTED) FEATURE with some MISSING FUNCTIONALITY (with known panics)
 os-error = []
 # TODO: DOCUMENT AS UNSTABLE (POSSIBLY UNSUPPORTED) FEATURE FOR UNIX PLATFORMS ONLY
