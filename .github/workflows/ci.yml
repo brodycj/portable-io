@@ -42,8 +42,8 @@ jobs:
       - run: rustup default ${{ matrix.rust }}
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
       - run: cargo build --no-default-features --verbose
-      # XXX TODO FIX & RE-ENABLE:
-      # - run: cargo test --no-default-features ${{ matrix.test-options }} --verbose
+      # XXX TBD SKIP DOC TESTS WITH NO FEATURES FOR NOW - XXX TBD ??? ???
+      - run: cargo test --no-default-features --all-targets --verbose
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
       # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
