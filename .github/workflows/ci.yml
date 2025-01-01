@@ -19,6 +19,7 @@ jobs:
     strategy:
       matrix:
         include:
+          # XXX TODO ADD TESTING WITH RUST STABLE & BETA TO MATRIX HERE (NEED TO SKIP XXX TBD UNSTABLE XXX FEATURES WITH RUST STABLE & BETA)
           - rust: nightly
           - os: macos-latest
             rust: nightly
@@ -55,6 +56,15 @@ jobs:
         if: (!startsWith(matrix.os, 'windows'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
+
+  # XXX TODO SHOULD BE PART OF MATRIX FOR BOTH BUILD & UNIT TESTING
+  build-stable:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # XXX TODO MISSING BUILD & UNIT TESTING WITH RUST BETA
+      - run: rustup default stable
+      - run: cargo build
 
   doc:
     runs-on: ubuntu-latest

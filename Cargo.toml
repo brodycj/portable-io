@@ -13,7 +13,9 @@ libc = { version = "0.2.169", optional = true, default-features = false }
 rustversion = "1.0.19"
 
 [features]
-# TODO: finer-grained feature options
+# XXX TBD RECONSIDER finer-grained feature options - ???
+# XXX TODO DOCUMENT THAT ALL XXX TBD UNSTABLE FEATURES REQUIRE XXX CFG FLAG TO BUILD
+# XXX TODO alloc feature should be able to build & test on Rust stable by default
 # XXX TODO FIX DOCUMENTATION OF ALLOC FEATURE LOCALLY & ON docs.rs
 # XXX TBD FEATURE DEPENDENCY - alloc -> readbuf - ??? ???
 alloc = ["readbuf"]
