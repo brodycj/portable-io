@@ -7,8 +7,10 @@
 // XXX TBD ??? ???
 
 #![cfg_attr(
-    // XXX TBD RECONSIDER NAMING OF THIS CFG - XXX TBD FINER-GRAINED CFG OPTIONS - ???
-    portable_io_unstable_all,
+    // XXX TBD RECONSIDER NAMING OF CFG OPTION - XXX TBD FINER-GRAINED CFG OPTIONS - ???
+    // XXX TBD RECONSIDER CFG PREDICATE WORKAROUND TO SUPPORT DOC BUILD - ???
+    // portable_io_unstable_all,
+    any(doc,portable_io_unstable_all),
     feature(
         allocator_api,
         // XXX TBD ???
