@@ -2,6 +2,7 @@
 mod tests;
 
 use core::cmp;
+#[cfg(feature = "alloc")]
 use core::convert::TryInto;
 
 #[cfg(feature = "alloc")]
