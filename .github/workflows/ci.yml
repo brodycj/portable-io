@@ -41,13 +41,15 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
-      - run: cargo build --no-default-features ${{ matrix.test-options }} --verbose
+      - run: cargo build --no-default-features --verbose
       # XXX TODO FIX & RE-ENABLE:
       # - run: cargo test --no-default-features ${{ matrix.test-options }} --verbose
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
