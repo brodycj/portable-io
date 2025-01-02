@@ -5,10 +5,10 @@ use alloc::string::{String, ToString};
 use alloc::vec;
 use alloc::vec::Vec;
 
-use crate::{Cursor, ReadBuf, SeekFrom};
 use crate::cmp::{self, min};
 use crate::{self as io, IoSlice, IoSliceMut};
 use crate::{BufRead, Read, Seek, Write};
+use crate::{Cursor, ReadBuf, SeekFrom};
 
 #[test]
 #[cfg_attr(target_os = "emscripten", ignore)]

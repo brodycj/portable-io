@@ -3,7 +3,6 @@
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
 
 #![no_std]
-
 #![feature(allocator_api)]
 #![feature(doc_notable_trait)]
 #![feature(maybe_uninit_slice)]
@@ -45,12 +44,14 @@ mod readbuf;
 mod sys;
 
 // TODO: support limited features with no use of `alloc` crate
-#[cfg(not(any(doc,feature = "alloc")))]
+#[cfg(not(any(doc, feature = "alloc")))]
 compile_error!("`alloc` feature is currently required for this library to build");
 
 // TODO: finer-grained unstable features
-#[cfg(not(any(doc,portable_io_unstable_all)))]
-compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
+#[cfg(not(any(doc, portable_io_unstable_all)))]
+compile_error!(
+    "`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build"
+);
 
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
@@ -1168,7 +1169,7 @@ pub enum SeekFrom {
     ///
     /// It is possible to seek beyond the end of an object, but it's an error to
     /// seek before byte 0.
-    Current(i64)
+    Current(i64),
 }
 
 fn read_until<R: BufRead + ?Sized>(r: &mut R, delim: u8, buf: &mut Vec<u8>) -> Result<usize> {

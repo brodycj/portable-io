@@ -1,0 +1,10 @@
+# XXX TODO TRY TO MODERNIZE THIS FOR 2025
+# based on:
+# - https://github.com/rust-lang/rust/blob/1.59.0/rustfmt.toml
+#
+# TODO: UPDATE rustfmt config to work with updated Rust toolchain without affecting formatting of code from Rust `std`
+#
+# Run rustfmt with this config (it should be picked up automatically).
+version = "Two"
+use_small_heuristics = "Max"
+merge_derives = false
