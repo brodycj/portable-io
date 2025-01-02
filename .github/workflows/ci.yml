@@ -92,6 +92,10 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default nightly
       - run: rustup component add clippy
+      # XXX TODO REMOVE THESE
+      - run: rustc --version
+      - run: cargo --version
+      - run: cargo clippy --version
       # XXX TODO REWORK NEEDED
       - run: cargo clippy --all-features -- --deny warnings --allow clippy::redundant-guards --allow clippy::needless-lifetimes --allow clippy::mem-replace-with-default --allow clippy::explicit-auto-deref --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
 
