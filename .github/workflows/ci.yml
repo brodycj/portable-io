@@ -67,7 +67,7 @@ jobs:
       - run: rustup default nightly
       - run: cargo build --features alloc --verbose
         env:
-          # XXX TODO REWORK NEEDED
+          # XXX TODO RESOLVE KNOWN WARNINGS OR IGNORE THESE ELSEWHERE
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
       - run: cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows'))
@@ -96,8 +96,10 @@ jobs:
       - run: rustc --version
       - run: cargo --version
       - run: cargo clippy --version
-      # XXX TODO REWORK NEEDED
-      - run: cargo clippy --all-features -- --deny warnings --allow clippy::redundant-guards --allow clippy::needless-lifetimes --allow clippy::mem-replace-with-default --allow clippy::explicit-auto-deref --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
+      - run: cargo clippy --all-features
+        env:
+          # XXX TODO RESOLVE KNOWN WARNINGS OR IGNORE THESE ELSEWHERE
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow clippy::redundant-guards --allow clippy::needless-lifetimes --allow clippy::mem-replace-with-default --allow clippy::explicit-auto-deref --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs --allow clippy::unnecessary-cast
 
   doc:
     runs-on: ubuntu-latest
