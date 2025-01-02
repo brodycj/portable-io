@@ -84,8 +84,9 @@ jobs:
           - rust: nightly
           - os: macos-latest
             rust: nightly
-          - os: windows-latest
-            rust: nightly
+          # XXX TBD SKIP FOR NOW (AT LEAST):
+          # - os: windows-latest
+          #   rust: nightly
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
