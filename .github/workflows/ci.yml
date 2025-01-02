@@ -69,4 +69,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default nightly
+      - run: rustup component add rustfmt
       - run: cargo doc --all-features
