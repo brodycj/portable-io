@@ -9,7 +9,8 @@ use alloc::string::String;
 use alloc::vec::Vec;
 
 use crate::{
-    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, ReadBuf, Seek, SeekFrom, Write,
+    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, ReadBuf, Seek, SeekFrom,
+    Write,
 };
 
 // =============================================================================

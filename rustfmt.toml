@@ -1,0 +1,10 @@
+# based on:
+# - https://github.com/rust-lang/rust/blob/1.59.0/rustfmt.toml
+# - https://github.com/rust-lang/rust/blob/1.83.0/rustfmt.toml
+#
+# NOTE: stable toolchain seems to display a warning message while formatting with this config.
+#
+# Run rustfmt with this config (it should be picked up automatically).
+style_edition = "2024"
+use_small_heuristics = "Max"
+merge_derives = false
