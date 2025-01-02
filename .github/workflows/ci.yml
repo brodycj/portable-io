@@ -76,7 +76,17 @@ jobs:
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
 
   clippy:
-    runs-on: ubuntu-latest
+    strategy:
+      # XXX TBD ??? ???
+      fail-fast: false
+      matrix:
+        include:
+          - rust: nightly
+          - os: macos-latest
+            rust: nightly
+          - os: windows-latest
+            rust: nightly
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - run: rustup default nightly
