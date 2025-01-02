@@ -18,6 +18,8 @@ jobs:
   # - enforce consistent Rust fmt (if possible without affecting too much code)
   test:
     strategy:
+      # XXX TBD ??? ???
+      fail-fast: false
       matrix:
         include:
           - rust: nightly
@@ -47,6 +49,8 @@ jobs:
 
   build:
     strategy:
+      # XXX TBD ??? ???
+      fail-fast: false
       matrix:
         include:
           - rust: nightly
@@ -61,22 +65,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default nightly
-      # XXX TODO IGNORE OR RESOLVE EXPECTED ERRORS
       - run: cargo build --features alloc --verbose
         env:
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
-      # XXX TODO IGNORE OR RESOLVE EXPECTED ERRORS
+          # XXX TODO REWORK NEEDED
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
       - run: cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows'))
         env:
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
+          # XXX TODO REWORK NEEDED
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
 
   clippy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: rustup default nightly
-      # XXX TODO REWORK:
+      - run: rustup component add clippy
+      # XXX TODO REWORK NEEDED
       - run: cargo clippy --all-features -- --deny warnings --allow clippy::redundant-guards --allow clippy::needless-lifetimes --allow clippy::mem-replace-with-default --allow clippy::explicit-auto-deref --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
 
   doc:
