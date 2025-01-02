@@ -68,11 +68,20 @@ jobs:
 
   # XXX TODO SHOULD BE PART OF MATRIX FOR BOTH BUILD & UNIT TESTING
   build-stable:
+    strategy:
+      # XXX TBD ??? ???
+      fail-fast: false
+      matrix:
+        include:
+          - rust: stable
+          - rust: 1.81
+          # XXX TBD EXPECTED TO FAIL:
+          - rust: 1.80
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       # XXX TODO MISSING BUILD & UNIT TESTING WITH RUST BETA
-      - run: rustup default stable
+      - run: rustup default ${{ matrix.rust }}
       - run: cargo build
         # XXX TBD QUICK WORKAROUND FOR GLOBAL ENV CONFIG - XXX TODO REMOVE IN FAVOR OF CONFIGURING PER CI JOB
         env:
