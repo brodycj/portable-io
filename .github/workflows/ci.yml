@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # XXX TODO DEFINE PER CI JOB
   RUSTFLAGS: --cfg portable_io_unstable_all
 
 jobs:
@@ -40,14 +41,43 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
-      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
-      - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
-      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
-      - run: cargo build --all-features ${{ matrix.test-options }} --verbose
-        if: (!startsWith(matrix.os, 'windows'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
+
+  build:
+    strategy:
+      matrix:
+        include:
+          - rust: nightly
+          - os: macos-latest
+            rust: nightly
+          - os: windows-latest
+            rust: nightly
+          - rust: nightly-2024-07-01
+          - rust: nightly-2023-07-01
+          - rust: nightly-2022-08-24 # MSRV (nightly)
+          runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default nightly
+      # XXX TODO IGNORE OR RESOLVE EXPECTED ERRORS
+      - run: cargo build --features alloc --verbose
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
+      # XXX TODO IGNORE OR RESOLVE EXPECTED ERRORS
+      - run: cargo build --all-features --verbose
+        if: (!startsWith(matrix.os, 'windows'))
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
+
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default nightly
+      # XXX TODO REWORK:
+      - run: cargo clippy --all-features -- --deny warnings --allow clippy::redundant-guards --allow clippy::needless-lifetimes --allow clippy::mem-replace-with-default --allow clippy::explicit-auto-deref --allow dead-code --allow unused-variables --allow stable-features --allow internal-features --allow incomplete-features --allow unexpected-cfgs
 
   doc:
     runs-on: ubuntu-latest
