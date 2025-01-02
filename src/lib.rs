@@ -55,6 +55,9 @@ compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
 
+// XXX TODO ADD NOTE(S) HERE
+#[allow(clippy::unnecessary_cast)]
+
 struct Guard<'a> {
     buf: &'a mut Vec<u8>,
     len: usize,
