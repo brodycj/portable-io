@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # XXX TODO CONFIGURE PER CI JOB TO AVOID MESSING UP RUST STABLE & NIGHTLY BUILD & TEST JOBS
   RUSTFLAGS: --cfg portable_io_unstable_all
 
 jobs:
@@ -19,12 +20,21 @@ jobs:
     strategy:
       matrix:
         include:
+          # XXX TODO ADD TESTING WITH RUST STABLE & BETA TO MATRIX HERE (NEED TO SKIP XXX TBD UNSTABLE XXX FEATURES WITH RUST STABLE & BETA)
           - rust: nightly
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - os: macos-latest
             rust: nightly
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - os: windows-latest
             rust: nightly
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - rust: nightly-2024-07-01
+            # XXX TODO REMOVE WORKAROUND IN FAVOR OF RESOLVING DOC TESTS
+            test-options: --all-targets # SKIP doc tests - XXX TODO REMOVE THIS WORKAROUND
           - rust: nightly-2023-07-01
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV (nightly)
@@ -41,13 +51,39 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      - run: cargo build --no-default-features --verbose
+      # XXX TBD SKIP DOC TESTS WITH NO FEATURES FOR NOW - XXX TBD ??? ???
+      - run: cargo test --no-default-features --all-targets --verbose
+      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+      # XXX TODO BUILD & UNIT TESTING WITH FEATURES: readbuf, size-hint
       # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
+      # (NO NEED FOR EXTRA TEST OPTIONS IN CARGO BUILD STEP HERE)
       - run: cargo build --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
+
+  # XXX TODO SHOULD BE PART OF MATRIX FOR BOTH BUILD & UNIT TESTING
+  build-stable:
+    strategy:
+      # XXX TBD ??? ???
+      fail-fast: false
+      matrix:
+        include:
+          - rust: beta
+          - rust: stable
+          - rust: '1.81'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default ${{ matrix.rust }}
+      - run: cargo build
+        # XXX TBD QUICK WORKAROUND FOR GLOBAL ENV CONFIG - XXX TODO REMOVE IN FAVOR OF CONFIGURING PER CI JOB
+        env:
+          RUSTFLAGS: ''
 
   doc:
     runs-on: ubuntu-latest

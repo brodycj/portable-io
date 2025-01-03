@@ -2,14 +2,18 @@
 mod tests;
 
 use core::cmp;
+#[cfg(feature = "alloc")]
 use core::convert::TryInto;
 
+#[cfg(feature = "alloc")]
 extern crate alloc;
-use alloc::boxed::Box;
-use alloc::vec::Vec;
+#[cfg(feature = "alloc")]
+use alloc::{boxed::Box, vec::Vec};
 
 use crate::prelude::*;
-use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, ReadBuf, SeekFrom};
+use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, SeekFrom};
+#[cfg(feature = "readbuf")]
+use crate::ReadBuf;
 
 /// A `Cursor` wraps an in-memory buffer and provides it with a
 /// [`Seek`] implementation.
@@ -269,6 +273,7 @@ where
         Ok(n)
     }
 
+    #[cfg(feature = "readbuf")]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let prev_filled = buf.filled_len();
 
@@ -341,6 +346,7 @@ fn slice_write_vectored(
     Ok(nwritten)
 }
 
+#[cfg(feature = "alloc")]
 // Resizing write implementation
 fn vec_write(pos_mut: &mut u64, vec: &mut Vec<u8>, buf: &[u8]) -> io::Result<usize> {
     let pos: usize = (*pos_mut).try_into().map_err(|_| {
@@ -370,6 +376,7 @@ fn vec_write(pos_mut: &mut u64, vec: &mut Vec<u8>, buf: &[u8]) -> io::Result<usi
     Ok(buf.len())
 }
 
+#[cfg(feature = "alloc")]
 fn vec_write_vectored(
     pos_mut: &mut u64,
     vec: &mut Vec<u8>,
@@ -404,6 +411,7 @@ impl Write for Cursor<&mut [u8]> {
     }
 }
 
+#[cfg(feature = "alloc")]
 impl Write for Cursor<&mut Vec<u8>> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         vec_write(&mut self.pos, self.inner, buf)
@@ -424,6 +432,7 @@ impl Write for Cursor<&mut Vec<u8>> {
     }
 }
 
+#[cfg(feature = "alloc")]
 impl Write for Cursor<Vec<u8>> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
         vec_write(&mut self.pos, &mut self.inner, buf)
@@ -444,6 +453,7 @@ impl Write for Cursor<Vec<u8>> {
     }
 }
 
+#[cfg(feature = "alloc")]
 impl Write for Cursor<Box<[u8]>> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {

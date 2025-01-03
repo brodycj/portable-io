@@ -5,6 +5,7 @@ use alloc::vec::Vec;
 use crate::prelude::*;
 use crate::{Cursor, IoSlice, IoSliceMut, SeekFrom};
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_vec_writer() {
     let mut writer = Vec::new();
@@ -21,6 +22,7 @@ fn test_vec_writer() {
     assert_eq!(writer, b);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_mem_writer() {
     let mut writer = Cursor::new(Vec::new());
@@ -37,6 +39,7 @@ fn test_mem_writer() {
     assert_eq!(&writer.get_ref()[..], b);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_mem_mut_writer() {
     let mut vec = Vec::new();
@@ -54,6 +57,7 @@ fn test_mem_mut_writer() {
     assert_eq!(&writer.get_ref()[..], b);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_box_slice_writer() {
     let mut writer = Cursor::new(vec![0u8; 9].into_boxed_slice());
@@ -72,6 +76,7 @@ fn test_box_slice_writer() {
     assert_eq!(&**writer.get_ref(), b);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_box_slice_writer_vectored() {
     let mut writer = Cursor::new(vec![0u8; 9].into_boxed_slice());
@@ -277,6 +282,7 @@ fn test_boxed_slice_reader_vectored() {
     assert_eq!(reader.read(&mut buf).unwrap(), 0);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn read_to_end() {
     let mut reader = Cursor::new(vec![0, 1, 2, 3, 4, 5, 6, 7]);
@@ -395,6 +401,8 @@ fn seek_past_end() {
 
     let mut r = Cursor::new(vec![10].into_boxed_slice());
     assert_eq!(r.seek(SeekFrom::Start(10)).unwrap(), 10);
+    // XXX TBD SKIP FINAL CHECK IN CASE OF XXX XXX
+    #[cfg(feature = "alloc")]
     assert_eq!(r.write(&[3]).unwrap(), 0);
 }
 
@@ -452,6 +460,7 @@ fn seek_before_0() {
     assert!(r.seek(SeekFrom::End(-2)).is_err());
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_seekable_mem_writer() {
     let mut writer = Cursor::new(Vec::<u8>::new());
@@ -486,6 +495,7 @@ fn test_seekable_mem_writer() {
     assert_eq!(&writer.get_ref()[..], b);
 }
 
+#[cfg(feature = "alloc")]
 #[test]
 fn vec_seek_past_end() {
     let mut r = Cursor::new(Vec::new());

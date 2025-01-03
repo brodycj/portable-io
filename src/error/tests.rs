@@ -1,5 +1,5 @@
-use core::error;
-use core::fmt;
+#[cfg(feature = "alloc")]
+use core::{error,fmt};
 use core::mem::size_of;
 
 extern crate alloc;
@@ -15,6 +15,7 @@ fn test_size() {
 
 // TODO ADD & TEST MISSING FUNCTIONALITY: DEBUG ERROR - OS ERROR
 
+#[cfg(feature = "alloc")]
 #[test]
 fn test_downcasting() {
     #[derive(Debug)]
