@@ -73,12 +73,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - rust: beta
           - rust: stable
           - rust: '1.81'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # XXX TODO MISSING BUILD & UNIT TESTING WITH RUST BETA
       - run: rustup default ${{ matrix.rust }}
       - run: cargo build
         # XXX TBD QUICK WORKAROUND FOR GLOBAL ENV CONFIG - XXX TODO REMOVE IN FAVOR OF CONFIGURING PER CI JOB
