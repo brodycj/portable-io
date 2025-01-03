@@ -10,11 +10,13 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 
 [dependencies]
 libc = { version = "0.2.169", optional = true, default-features = false }
+memchr = { version = "2.7.4", default-features = false }
 rustversion = "1.0.19"
 
 [features]
-# TODO: finer-grained feature options
+# TODO: finer-grained feature options - XXX TBD ???
 alloc = []
+# XXX TBD DOCUMENT THAT ALL XXX TBD UNSTABLE FEATURES REQUIRE XXX CFG FLAG TO BUILD
 # TODO: DOCUMENT AS UNSTABLE FEATURE with some MISSING FUNCTIONALITY (with known panics)
 os-error = []
 # TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY

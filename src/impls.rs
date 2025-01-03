@@ -1,3 +1,4 @@
+#[cfg(portable_io_unstable_all)] // unstable feature: Vec Write
 use core::alloc::Allocator;
 use core::cmp;
 use core::fmt;
@@ -9,8 +10,10 @@ use alloc::string::String;
 use alloc::vec::Vec;
 
 use crate::{
-    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, ReadBuf, Seek, SeekFrom, Write,
+    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, Seek, SeekFrom, Write,
 };
+#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+use crate::ReadBuf;
 
 // =============================================================================
 // Forwarding implementations
@@ -21,6 +24,7 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).read(buf)
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -36,11 +40,13 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).is_read_vectored()
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -121,6 +127,7 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).read(buf)
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -136,11 +143,13 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).is_read_vectored()
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -241,6 +250,7 @@ impl Read for &[u8] {
         Ok(amt)
     }
 
+    #[cfg(feature = "readbuf")]
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let amt = cmp::min(buf.remaining(), self.len());
@@ -290,6 +300,7 @@ impl Read for &[u8] {
         Ok(())
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         buf.extend_from_slice(*self);
@@ -365,6 +376,7 @@ impl Write for &mut [u8] {
 
 /// Write is implemented for `Vec<u8>` by appending to the vector.
 /// The vector will grow as needed.
+#[cfg(portable_io_unstable_all)] // unstable feature: Vec Write
 impl<A: Allocator> Write for Vec<u8, A> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {

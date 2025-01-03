@@ -5,11 +5,14 @@ use alloc::string::{String, ToString};
 use alloc::vec;
 use alloc::vec::Vec;
 
-use crate::{Cursor, ReadBuf, SeekFrom};
+#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+use crate::ReadBuf;
+use crate::{Cursor, SeekFrom};
 use crate::cmp::{self, min};
 use crate::{self as io, IoSlice, IoSliceMut};
 use crate::{BufRead, Read, Seek, Write};
 
+#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 #[test]
 #[cfg_attr(target_os = "emscripten", ignore)]
 fn read_until() {
@@ -30,6 +33,7 @@ fn read_until() {
     assert_eq!(v, []);
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 #[test]
 fn split() {
     let buf = Cursor::new(&b"12"[..]);
@@ -162,6 +166,7 @@ fn read_exact_slice() {
     assert_eq!(c, b"9");
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 #[test]
 fn read_buf_exact() {
     let mut buf = [0; 4];
@@ -240,12 +245,14 @@ fn chain_bufread() {
 
 // TODO TEST SIZE HINT WITH WITH MISSING FUNCTIONALITY: empty()
 
+#[cfg(portable_io_unstable_all)] // unstable feature: SizeHint
 #[test]
 fn slice_size_hint() {
     let size_hint = (&[1, 2, 3]).bytes().size_hint();
     assert_eq!(size_hint, (3, Some(3)));
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: SizeHint
 #[test]
 fn take_size_hint() {
     let size_hint = (&[1, 2, 3]).take(2).bytes().size_hint();
