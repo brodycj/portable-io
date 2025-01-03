@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # XXX TODO CONFIGURE PER CI JOB TO AVOID MESSING UP RUST STABLE & NIGHTLY BUILD & TEST JOBS
   RUSTFLAGS: --cfg portable_io_unstable_all
 
 jobs:
@@ -19,6 +20,7 @@ jobs:
     strategy:
       matrix:
         include:
+          # XXX TODO ADD TESTING WITH RUST STABLE & BETA TO MATRIX HERE (NEED TO SKIP XXX TBD UNSTABLE XXX FEATURES WITH RUST STABLE & BETA)
           - rust: nightly
           - os: macos-latest
             rust: nightly
@@ -48,6 +50,25 @@ jobs:
         if: (!startsWith(matrix.os, 'windows'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
+
+  # XXX TODO SHOULD BE PART OF MATRIX FOR BOTH BUILD & UNIT TESTING
+  build-stable:
+    strategy:
+      # XXX TBD ??? ???
+      fail-fast: false
+      matrix:
+        include:
+          - rust: beta
+          - rust: stable
+          - rust: '1.81'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default ${{ matrix.rust }}
+      - run: cargo build
+        # XXX TBD QUICK WORKAROUND FOR GLOBAL ENV CONFIG - XXX TODO REMOVE IN FAVOR OF CONFIGURING PER CI JOB
+        env:
+          RUSTFLAGS: ''
 
   doc:
     runs-on: ubuntu-latest

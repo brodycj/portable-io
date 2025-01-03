@@ -9,7 +9,9 @@ use alloc::boxed::Box;
 use alloc::vec::Vec;
 
 use crate::prelude::*;
-use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, ReadBuf, SeekFrom};
+use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, SeekFrom};
+#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+use crate::ReadBuf;
 
 /// A `Cursor` wraps an in-memory buffer and provides it with a
 /// [`Seek`] implementation.
@@ -269,6 +271,7 @@ where
         Ok(n)
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let prev_filled = buf.filled_len();
 
