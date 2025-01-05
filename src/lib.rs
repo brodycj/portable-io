@@ -12,6 +12,7 @@
         allocator_api,
         // XXX TBD ???
         // doc_notable_trait,
+        // XXX TBD ??? ??? ???:
         maybe_uninit_slice,
         maybe_uninit_write_slice,
         ptr_as_uninit,
