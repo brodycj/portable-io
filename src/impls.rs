@@ -250,7 +250,8 @@ impl Read for &[u8] {
         Ok(amt)
     }
 
-    #[cfg(feature = "readbuf")]
+    // XXX TODO SEEMS TO BE MISSING UNIT TEST COVERAGE:
+    #[cfg(portable_io_unstable_all)] // unstable feature: XXX XXX
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let amt = cmp::min(buf.remaining(), self.len());
