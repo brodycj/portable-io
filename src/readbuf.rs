@@ -6,8 +6,6 @@ use core::{cmp, slice};
 use core::fmt::{self, Debug, Formatter};
 use core::mem::MaybeUninit;
 
-#[cfg(portable_io_unstable_all)] // unstable feature: XXX XXX
-
 /// A wrapper around a byte buffer that is incrementally filled and initialized.
 ///
 /// This type is a sort of "double cursor". It tracks three regions in the buffer: a region at the beginning of the
