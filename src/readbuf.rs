@@ -106,7 +106,6 @@ impl<'a> ReadBuf<'a> {
     #[inline]
     pub fn initialized_mut(&mut self) -> &mut [u8] {
         //SAFETY: We only slice the initialized part of the buffer, which is always valid
-        // (ADAPTED to mimic unstable mut ptr fn)
         // (ADAPTED to mimic unstable MaybeUninit::slice_assume_init_mut fn)
         let initialized_slice_mut_ptr = &mut self.buf[0..self.initialized] as *mut [MaybeUninit<u8>];
         unsafe { &mut *(initialized_slice_mut_ptr as *mut [u8]) }
