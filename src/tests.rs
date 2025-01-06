@@ -6,14 +6,14 @@ use alloc::vec;
 use alloc::vec::Vec;
 
 // XXX
-// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// // XXX CFG GONE: ... unstable feature: ReadBuf
 // use crate::ReadBuf;
 use crate::cmp::{self, min};
 use crate::{self as io, IoSlice, IoSliceMut};
 use crate::{BufRead, Read, Seek, Write};
 use crate::{Cursor, ReadBuf, SeekFrom};
 
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 #[test]
 #[cfg_attr(target_os = "emscripten", ignore)]
 fn read_until() {
@@ -34,7 +34,7 @@ fn read_until() {
     assert_eq!(v, []);
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 #[test]
 fn split() {
     let buf = Cursor::new(&b"12"[..]);
@@ -167,7 +167,7 @@ fn read_exact_slice() {
     assert_eq!(c, b"9");
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 #[test]
 fn read_buf_exact() {
     let mut buf = [0; 4];

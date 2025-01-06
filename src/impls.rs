@@ -13,7 +13,7 @@ use crate::{
     self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, Seek, SeekFrom, Write,
 };
 // XXX TODO REMOVE CFG CONDITIONS FOR "unstable feature: ReadBuf" - ReadBuf functionality should now work with Rust stable
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 use crate::ReadBuf;
 
 // =============================================================================
@@ -25,7 +25,7 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).read(buf)
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -41,13 +41,13 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).is_read_vectored()
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -128,7 +128,7 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).read(buf)
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -144,13 +144,13 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).is_read_vectored()
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -252,7 +252,7 @@ impl Read for &[u8] {
     }
 
     // XXX TBD MISSING UNIT TEST COVERAGE - ???
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let amt = cmp::min(buf.remaining(), self.len());
@@ -302,7 +302,7 @@ impl Read for &[u8] {
         Ok(())
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         buf.extend_from_slice(*self);

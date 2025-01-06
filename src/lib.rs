@@ -44,13 +44,11 @@ use alloc::boxed::Box;
 use alloc::string::String;
 use alloc::vec::Vec;
 
-use memchr::memchr;
-
 // TODO: port & export more items from Rust std::io
 pub use self::cursor::Cursor;
 pub use self::error::{Error, ErrorKind, Result};
 // XXX
-// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// // XXX CFG GONE: ... unstable feature: ReadBuf
 pub use self::readbuf::ReadBuf;
 
 mod cursor;
@@ -58,7 +56,7 @@ mod error;
 mod impls;
 pub mod prelude;
 // XXX
-// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// // XXX CFG GONE: ... unstable feature: ReadBuf
 mod readbuf;
 
 mod sys;
@@ -131,7 +129,7 @@ where
 // of data to return. Simply tacking on an extra DEFAULT_BUF_SIZE space every
 // time is 4,500 times (!) slower than a default reservation size of 32 if the
 // reader has a very small amount of data to return.
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 pub(crate) fn default_read_to_end<R: Read + ?Sized>(r: &mut R, buf: &mut Vec<u8>) -> Result<usize> {
     let start_len = buf.len();
     let start_cap = buf.capacity();
@@ -190,7 +188,7 @@ pub(crate) fn default_read_to_end<R: Read + ?Sized>(r: &mut R, buf: &mut Vec<u8>
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 pub(crate) fn default_read_to_string<R: Read + ?Sized>(
     r: &mut R,
     buf: &mut String,
@@ -242,7 +240,7 @@ pub(crate) fn default_read_exact<R: Read + ?Sized>(this: &mut R, mut buf: &mut [
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 pub(crate) fn default_read_buf<F>(read: F, buf: &mut ReadBuf<'_>) -> Result<()>
 where
     F: FnOnce(&mut [u8]) -> Result<usize>,
@@ -398,7 +396,7 @@ pub trait Read {
     ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
     // XXX TBD ??? ???
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
         default_read_to_end(self, buf)
     }
@@ -419,7 +417,7 @@ pub trait Read {
     ///
     /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE FS -->
     // XXX TBD ??? ???
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     fn read_to_string(&mut self, buf: &mut String) -> Result<usize> {
         default_read_to_string(self, buf)
     }
@@ -464,7 +462,7 @@ pub trait Read {
     /// with uninitialized buffers. The new data will be appended to any existing contents of `buf`.
     ///
     /// The default implementation delegates to `read`.
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         default_read_buf(|b| self.read(b), buf)
     }
@@ -473,7 +471,7 @@ pub trait Read {
     ///
     /// This is equivalent to the [`read_exact`](Read::read_exact) method, except that it is passed a [`ReadBuf`] rather than `[u8]` to
     /// allow use with uninitialized buffers.
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     fn read_buf_exact(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         while buf.remaining() > 0 {
             let prev_filled = buf.filled().len();
@@ -584,7 +582,7 @@ pub trait Read {
 ///
 /// <!-- TODO ADD EXAMPLE CODE THAT DOES NOT USE STDIN -->
 // XXX TBD ??? ???
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX CFG GONE: ... unstable feature: ReadBuf
 pub fn read_to_string<R: Read>(reader: &mut R) -> Result<String> {
     let mut buf = String::new();
     reader.read_to_string(&mut buf)?;
@@ -1678,7 +1676,7 @@ impl<T: Read> Read for Take<T> {
         Ok(n)
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+    // XXX CFG GONE: ... unstable feature: ReadBuf
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> Result<()> {
         // Don't call into inner reader at all at EOF because it may still block
         if self.limit == 0 {
