@@ -19,3 +19,8 @@ alloc = []
 os-error = []
 # TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY
 unix-iovec = ["dep:libc"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(portable_io_unstable_all)',
+]}

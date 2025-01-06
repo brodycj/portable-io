@@ -7,6 +7,8 @@
 #![feature(allocator_api)]
 #![feature(doc_notable_trait)]
 #![feature(min_specialization)]
+// ---
+#![allow(stable_features)]
 #![feature(error_in_core)]
 #![feature(mixed_integer_ops)]
 
