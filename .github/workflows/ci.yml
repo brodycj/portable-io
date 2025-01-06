@@ -66,7 +66,7 @@ jobs:
         # env:
         #   RUSTFLAGS: --deny warnings
       - run: cargo build --all-features --verbose
-        if: (!startsWith(matrix.os, 'windows'))
+        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
           # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
           # RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
@@ -76,7 +76,7 @@ jobs:
         # env:
         #   RUSTFLAGS: --deny warnings
       - run: cargo test --all-features --no-run
-        if: (!startsWith(matrix.os, 'windows'))
+        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
           # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
           # RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
