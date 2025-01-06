@@ -11,7 +11,6 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 [dependencies]
 libc = { version = "0.2.169", optional = true, default-features = false }
 memchr = { version = "2.7.4", default-features = false }
-rustversion = "1.0.19"
 
 [features]
 # TODO: finer-grained feature options
