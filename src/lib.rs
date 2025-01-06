@@ -9,8 +9,12 @@
 #![feature(maybe_uninit_slice)]
 #![feature(maybe_uninit_write_slice)]
 #![feature(ptr_as_uninit)]
+#![feature(min_specialization)]
+// ---
+#![allow(internal_features)]
 #![feature(slice_internals)]
-#![feature(specialization)]
+// ---
+#![allow(stable_features)]
 #![feature(error_in_core)]
 #![feature(mixed_integer_ops)]
 
