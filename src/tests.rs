@@ -5,12 +5,13 @@ use alloc::string::{String, ToString};
 use alloc::vec;
 use alloc::vec::Vec;
 
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
-use crate::ReadBuf;
-use crate::{Cursor, SeekFrom};
+// XXX
+// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// use crate::ReadBuf;
 use crate::cmp::{self, min};
 use crate::{self as io, IoSlice, IoSliceMut};
 use crate::{BufRead, Read, Seek, Write};
+use crate::{Cursor, ReadBuf, SeekFrom};
 
 #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 #[test]

@@ -4,6 +4,7 @@ mod tests;
 use core::cmp;
 use core::fmt::{self, Debug, Formatter};
 use core::mem::MaybeUninit;
+use core::slice;
 
 /// A wrapper around a byte buffer that is incrementally filled and initialized.
 ///
@@ -39,10 +40,13 @@ impl<'a> ReadBuf<'a> {
     #[inline]
     pub fn new(buf: &'a mut [u8]) -> ReadBuf<'a> {
         let len = buf.len();
+        // FOR ADAPTED code below
+        let buf_ptr = buf as *mut [u8];
 
         ReadBuf {
             //SAFETY: initialized data never becoming uninitialized is an invariant of ReadBuf
-            buf: unsafe { (buf as *mut [u8]).as_uninit_slice_mut().unwrap() },
+            // (ADAPTED to avoid using unstable fn)
+            buf: unsafe { slice::from_raw_parts_mut(buf_ptr as *mut MaybeUninit<u8>, len) },
             filled: 0,
             initialized: len,
         }
@@ -66,14 +70,18 @@ impl<'a> ReadBuf<'a> {
     #[inline]
     pub fn filled(&self) -> &[u8] {
         //SAFETY: We only slice the filled part of the buffer, which is always valid
-        unsafe { MaybeUninit::slice_assume_init_ref(&self.buf[0..self.filled]) }
+        // (ADAPTED to avoid using unstable fn)
+        let filled_slice_ptr = &self.buf[0..self.filled] as *const [MaybeUninit<u8>];
+        unsafe { &*(filled_slice_ptr as *const [u8]) }
     }
 
     /// Returns a mutable reference to the filled portion of the buffer.
     #[inline]
     pub fn filled_mut(&mut self) -> &mut [u8] {
         //SAFETY: We only slice the filled part of the buffer, which is always valid
-        unsafe { MaybeUninit::slice_assume_init_mut(&mut self.buf[0..self.filled]) }
+        // (ADAPTED to avoid using unstable fn)
+        let filled_slice_mut_ptr = &mut self.buf[0..self.filled] as *mut [MaybeUninit<u8>];
+        unsafe { &mut *(filled_slice_mut_ptr as *mut [u8]) }
     }
 
     /// Returns a shared reference to the initialized portion of the buffer.
@@ -82,7 +90,9 @@ impl<'a> ReadBuf<'a> {
     #[inline]
     pub fn initialized(&self) -> &[u8] {
         //SAFETY: We only slice the initialized part of the buffer, which is always valid
-        unsafe { MaybeUninit::slice_assume_init_ref(&self.buf[0..self.initialized]) }
+        // (ADAPTED to avoid using unstable fn)
+        let initialized_slice_ptr = &self.buf[0..self.initialized] as *const [MaybeUninit<u8>];
+        unsafe { &*(initialized_slice_ptr as *const [u8]) }
     }
 
     /// Returns a mutable reference to the initialized portion of the buffer.
@@ -91,7 +101,10 @@ impl<'a> ReadBuf<'a> {
     #[inline]
     pub fn initialized_mut(&mut self) -> &mut [u8] {
         //SAFETY: We only slice the initialized part of the buffer, which is always valid
-        unsafe { MaybeUninit::slice_assume_init_mut(&mut self.buf[0..self.initialized]) }
+        // (ADAPTED to avoid using unstable fn)
+        let initialized_slice_mut_ptr =
+            &mut self.buf[0..self.initialized] as *mut [MaybeUninit<u8>];
+        unsafe { &mut *(initialized_slice_mut_ptr as *mut [u8]) }
     }
 
     /// Returns a mutable reference to the unfilled part of the buffer without ensuring that it has been fully
@@ -221,8 +234,9 @@ impl<'a> ReadBuf<'a> {
 
         // SAFETY: we do not de-initialize any of the elements of the slice
         unsafe {
-            // ADAPTED with WORKAROUND fn to support Rust nightly -> 2022-08-24
-            write_unfilled_buf(self, buf);
+            // (ADAPTED to avoid using unstable fn)
+            let buf_as_slice = &*(buf as *const [u8] as *const [MaybeUninit<u8>]);
+            self.unfilled_mut()[..buf.len()].copy_from_slice(buf_as_slice);
         };
 
         // SAFETY: We just added the entire contents of buf to the filled section.
@@ -241,16 +255,4 @@ impl<'a> ReadBuf<'a> {
     pub fn initialized_len(&self) -> usize {
         self.initialized
     }
-}
-
-// WORKAROUND fn to support Rust nightly -> 2022-08-24
-#[rustversion::since(2024-02-16)]
-#[inline]
-unsafe fn write_unfilled_buf(this: &mut ReadBuf, buf: &[u8]) {
-    MaybeUninit::copy_from_slice(&mut this.unfilled_mut()[..buf.len()], buf);
-}
-#[rustversion::before(2024-02-16)]
-#[inline]
-unsafe fn write_unfilled_buf(this: &mut ReadBuf, buf: &[u8]) {
-    MaybeUninit::write_slice(&mut this.unfilled_mut()[..buf.len()], buf);
 }

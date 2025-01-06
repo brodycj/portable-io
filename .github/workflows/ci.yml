@@ -8,16 +8,13 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  # XXX TODO CONFIGURE PER CI JOB TO AVOID MESSING UP RUST STABLE & NIGHTLY BUILD & TEST JOBS
-  RUSTFLAGS: --cfg portable_io_unstable_all
 
 jobs:
   # General TODO items:
   # - try Rust clippy (should avoid all warnings)
-  # - check for build & test warnings
-  # - enforce consistent Rust fmt (if possible without affecting too much code)
   test:
     strategy:
+      fail-fast: false
       matrix:
         include:
           # XXX TODO ADD TESTING WITH RUST STABLE & BETA TO MATRIX HERE (NEED TO SKIP XXX TBD UNSTABLE XXX FEATURES WITH RUST STABLE & BETA)
@@ -31,44 +28,67 @@ jobs:
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV (nightly)
             test-options: --all-targets # SKIP doc tests
-          # TEST with these Rust nightly versions to check for correct rustversion conditions in `src/readbuf.rs`
-          - rust: nightly-2024-02-17
-            test-options: --all-targets # SKIP doc tests
-          - rust: nightly-2024-02-16
-            test-options: --all-targets # SKIP doc tests
-          - rust: nightly-2024-02-15
-            test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
-      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
-      - run: cargo build --features alloc ${{ matrix.test-options }} --verbose
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
-      # TODO: MOVE CARGO BUILD TEST TO NEW BUILD JOB & CHECK FOR ANY BUILD WARNINGS TO BE RESOLVED
-      - run: cargo build --all-features ${{ matrix.test-options }} --verbose
-        if: (!startsWith(matrix.os, 'windows'))
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all
 
-  # XXX TODO SHOULD BE PART OF MATRIX FOR BOTH BUILD & UNIT TESTING
-  build-stable:
+  build:
     strategy:
-      # XXX TBD ??? ???
       fail-fast: false
       matrix:
         include:
           - rust: beta
+          # XXX TODO TEST RUST STABLE WITH MACOS & WINDOWS
           - rust: stable
-          - rust: '1.81'
+          - rust: '1.81' # MSRV (stable)
+          - rust: nightly
+          - os: macos-latest
+            rust: nightly
+          - os: windows-latest
+            rust: nightly
+          - rust: nightly-2024-07-01
+          - rust: nightly-2023-07-01
+          - rust: nightly-2022-08-24 # MSRV (nightly)
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default ${{ matrix.rust }}
+      - run: cargo build --features alloc --verbose
+        env:
+          RUSTFLAGS: --deny warnings
+      - run: cargo build --all-features --verbose
+        if: (!startsWith(matrix.os, 'windows'))
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
+      - run: cargo test --features alloc --no-run
+        env:
+          RUSTFLAGS: --deny warnings
+      - run: cargo test --all-features --no-run
+        if: (!startsWith(matrix.os, 'windows'))
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
+
+  fmt:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rust: stable
+          - rust: nightly
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
-      - run: cargo build --features alloc
-        # XXX TBD QUICK WORKAROUND FOR GLOBAL ENV CONFIG - XXX TODO REMOVE IN FAVOR OF CONFIGURING PER CI JOB
-        env:
-          RUSTFLAGS: ''
+      - run: rustup component add rustfmt
+      - run: cargo fmt --check
 
   doc:
     runs-on: ubuntu-latest

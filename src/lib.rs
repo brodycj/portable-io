@@ -1,9 +1,12 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
+//! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
 
 #![no_std]
-
+// ---
+// XXX TODO ADD RATIONALE FOR KEEPING ALLOW STABLE FEATURES
+#![allow(stable_features)]
 #![cfg_attr(
     // XXX TBD RECONSIDER NAMING OF THIS CFG - XXX TBD FINER-GRAINED CFG OPTIONS - ???
     // XXX TBD ENABLE FOR DOC - ??? ??? ???
@@ -12,11 +15,12 @@
         allocator_api,
         // XXX TBD ???
         // doc_notable_trait,
-        maybe_uninit_slice,
-        maybe_uninit_write_slice,
-        ptr_as_uninit,
-        slice_internals,
-        specialization,
+        // maybe_uninit_slice,
+        // maybe_uninit_write_slice,
+        // ptr_as_uninit,
+        // slice_internals,
+        // specialization,
+        min_specialization,
         error_in_core,
         mixed_integer_ops,
     )
@@ -45,26 +49,30 @@ use memchr::memchr;
 // TODO: port & export more items from Rust std::io
 pub use self::cursor::Cursor;
 pub use self::error::{Error, ErrorKind, Result};
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX
+// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 pub use self::readbuf::ReadBuf;
 
 mod cursor;
 mod error;
 mod impls;
 pub mod prelude;
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX
+// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 mod readbuf;
 
 mod sys;
 
 // TODO: support limited features with no use of `alloc` crate
-#[cfg(not(any(doc,feature = "alloc")))]
+#[cfg(not(any(doc, feature = "alloc")))]
 compile_error!("`alloc` feature is currently required for this library to build");
 
 // XXX XXX REQUIRE THIS CFG IF ANY XXX FEATURES ARE ENABLED
 // TODO: finer-grained unstable features
-// #[cfg(not(any(doc,portable_io_unstable_all)))]
-// compile_error!("`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build");
+// #[cfg(not(any(doc, portable_io_unstable_all)))]
+// compile_error!(
+//     "`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build"
+// );
 
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
@@ -1195,7 +1203,7 @@ pub enum SeekFrom {
     ///
     /// It is possible to seek beyond the end of an object, but it's an error to
     /// seek before byte 0.
-    Current(i64)
+    Current(i64),
 }
 
 fn read_until<R: BufRead + ?Sized>(r: &mut R, delim: u8, buf: &mut Vec<u8>) -> Result<usize> {

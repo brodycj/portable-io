@@ -12,6 +12,7 @@ use alloc::vec::Vec;
 use crate::{
     self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, Seek, SeekFrom, Write,
 };
+// XXX TODO REMOVE CFG CONDITIONS FOR "unstable feature: ReadBuf" - ReadBuf functionality should now work with Rust stable
 #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 use crate::ReadBuf;
 

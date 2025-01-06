@@ -10,7 +10,8 @@ use alloc::vec::Vec;
 
 use crate::prelude::*;
 use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, SeekFrom};
-#[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
+// XXX
+// #[cfg(portable_io_unstable_all)] // unstable feature: ReadBuf
 use crate::ReadBuf;
 
 /// A `Cursor` wraps an in-memory buffer and provides it with a
