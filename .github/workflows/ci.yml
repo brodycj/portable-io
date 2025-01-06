@@ -73,14 +73,11 @@ jobs:
 
   fmt:
     strategy:
-      # XXX TBD ??? ???
       fail-fast: false
       matrix:
         include:
-          # XXX TBD ??? ???
           - rust: stable
           - rust: nightly
-          - rust: nightly-2025-01-01
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
