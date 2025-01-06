@@ -15,7 +15,6 @@ jobs:
   # - enforce consistent Rust fmt (if possible without affecting too much code)
   test:
     strategy:
-      # XXX TBD ??? ???
       fail-fast: false
       matrix:
         include:
@@ -43,7 +42,6 @@ jobs:
 
   build:
     strategy:
-      # XXX TBD ??? ???
       fail-fast: false
       matrix:
         include:
