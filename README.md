@@ -8,6 +8,7 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 - XXX TBD Rust stable MSRV (with no features enabled): `1.81.0`
 - XXX TBD Rust nightly toolchain required for XXX features - XXX nightly MSRV: `nightly-2022-08-24`
 - XXX enable `--cfg portable_io_unstable_all` Rust flag - XXX IN CASE OF XXX FEATURES - XXX TBD SHOULD THIS BE FINER-GRAINED ???
+- XXX XXX TBD `--cfg portable_io_unstable_all` Rust flag is always required for Rust nightly pre-XXX - XXX TBD EXPLAIN RATIONALE ???
 
 ## major TODO items
 

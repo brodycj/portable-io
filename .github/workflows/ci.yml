@@ -35,6 +35,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
       - run: cargo test --features alloc --all-targets --verbose # SKIP doc tests with no unstable cfg option here
+        # XXX XXX QUICK WORKAROUND
+        if: (!startsWith(matrix.rust, 'nightly-2023') && !startsWith(matrix.rust, 'nightly-2022'))
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
         if: startsWith(matrix.rust, 'nightly')
         env:
