@@ -67,6 +67,10 @@ jobs:
         env:
           # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
+      - run: cargo test --all-features --no-run
+        env:
+          # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
 
   doc:
     runs-on: ubuntu-latest
