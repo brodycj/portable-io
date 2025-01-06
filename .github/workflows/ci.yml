@@ -8,8 +8,6 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  # XXX TODO DEFINE PER CI JOB
-  RUSTFLAGS: --cfg portable_io_unstable_all
 
 jobs:
   # General TODO items:
@@ -36,8 +34,12 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (!startsWith(matrix.os, 'windows'))
+        env:
+          RUSTFLAGS: --cfg portable_io_unstable_all
 
   build:
     strategy:
