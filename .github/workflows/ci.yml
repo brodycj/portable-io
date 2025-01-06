@@ -32,13 +32,6 @@ jobs:
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV (nightly)
             test-options: --all-targets # SKIP doc tests
-          # TEST with these Rust nightly versions to check for correct rustversion conditions in `src/readbuf.rs`
-          - rust: nightly-2024-02-17
-            test-options: --all-targets # SKIP doc tests
-          - rust: nightly-2024-02-16
-            test-options: --all-targets # SKIP doc tests
-          - rust: nightly-2024-02-15
-            test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4

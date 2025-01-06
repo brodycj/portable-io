@@ -6,13 +6,7 @@
 
 #![feature(allocator_api)]
 #![feature(doc_notable_trait)]
-#![feature(maybe_uninit_slice)]
-#![feature(maybe_uninit_write_slice)]
-#![feature(ptr_as_uninit)]
 #![feature(min_specialization)]
-// ---
-#![allow(internal_features)]
-#![feature(slice_internals)]
 // ---
 #![allow(stable_features)]
 #![feature(error_in_core)]
@@ -27,7 +21,6 @@ use core::fmt;
 use core::mem::replace;
 use core::ops::{Deref, DerefMut};
 use core::slice;
-use core::slice::memchr;
 use core::str;
 
 extern crate alloc;
