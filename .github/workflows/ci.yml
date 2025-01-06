@@ -12,7 +12,6 @@ env:
 jobs:
   # General TODO items:
   # - try Rust clippy (should avoid all warnings)
-  # - enforce consistent Rust fmt (if possible without affecting too much code)
   test:
     strategy:
       fail-fast: false
@@ -71,6 +70,20 @@ jobs:
         if: (!startsWith(matrix.os, 'windows'))
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
+
+  fmt:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rust: stable
+          - rust: nightly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup default ${{ matrix.rust }}
+      - run: rustup component add rustfmt
+      - run: cargo fmt --check
 
   doc:
     runs-on: ubuntu-latest
