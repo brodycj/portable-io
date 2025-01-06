@@ -5,6 +5,7 @@ use alloc::vec::Vec;
 use crate::prelude::*;
 use crate::{Cursor, IoSlice, IoSliceMut, SeekFrom};
 
+#[cfg(portable_io_unstable_all)] // unstable feature: Vec Write
 #[test]
 fn test_vec_writer() {
     let mut writer = Vec::new();
