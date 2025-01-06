@@ -4,6 +4,7 @@
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
 
 #![no_std]
+// ---
 #![feature(allocator_api)]
 #![feature(doc_notable_trait)]
 #![feature(min_specialization)]
