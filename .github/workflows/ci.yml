@@ -59,22 +59,18 @@ jobs:
       - run: rustup default ${{ matrix.rust }}
       - run: cargo build --features alloc --verbose
         env:
-          # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows'))
         env:
-          # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo test --features alloc --no-run
         env:
-          # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo test --all-features --no-run
         if: (!startsWith(matrix.os, 'windows'))
         env:
-          # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
 
   doc:
     runs-on: ubuntu-latest
