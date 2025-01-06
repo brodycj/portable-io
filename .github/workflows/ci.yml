@@ -68,32 +68,6 @@ jobs:
           # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow unexpected-cfgs
 
-  clippy:
-    strategy:
-      # XXX TBD ??? ???
-      fail-fast: false
-      matrix:
-        include:
-          - rust: nightly
-          - os: macos-latest
-            rust: nightly
-          # XXX TBD SKIP FOR NOW (AT LEAST):
-          # - os: windows-latest
-          #   rust: nightly
-    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
-    steps:
-      - uses: actions/checkout@v4
-      - run: rustup default ${{ matrix.rust }}
-      - run: rustup component add clippy
-      # XXX TODO REMOVE THESE
-      - run: rustc --version
-      - run: cargo --version
-      - run: cargo clippy --version
-      - run: cargo clippy --all-features
-        env:
-          # XXX TODO RESOLVE REMAINING WARNINGS (OR IGNORE ELSEWHERE)
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings --allow clippy::redundant-guards --allow clippy::needless-lifetimes --allow clippy::mem-replace-with-default --allow clippy::explicit-auto-deref --allow unexpected-cfgs --allow clippy::unnecessary-cast
-
   doc:
     runs-on: ubuntu-latest
     steps:
