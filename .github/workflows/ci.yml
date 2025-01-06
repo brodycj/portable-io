@@ -63,27 +63,21 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
       - run: cargo build --features alloc --verbose
-        # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
-        # env:
-        #   RUSTFLAGS: --deny warnings
+        env:
+          RUSTFLAGS: --deny warnings
       - run: cargo build --all-features --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
-          # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
-          # RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
-          RUSTFLAGS: --cfg portable_io_unstable_all
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo test --features alloc --no-run
         # XXX TBD SKIP THIS STEP FOR NOW - XXX TODO RESOLVE ISSUE & RE-ENABLE THIS STEP
         if: ${{ false }}
-        # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
-        # env:
-        #   RUSTFLAGS: --deny warnings
+        env:
+          RUSTFLAGS: --deny warnings
       - run: cargo test --all-features --no-run
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
-          # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
-          # RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
-          RUSTFLAGS: --cfg portable_io_unstable_all
+          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
 
   fmt:
     strategy:
