@@ -1,4 +1,5 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
+//! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
 
