@@ -232,15 +232,15 @@ impl<'a> ReadBuf<'a> {
     /// # Panics
     ///
     /// Panics if `self.remaining()` is less than `buf.len()`.
-    #[cfg(portable_io_unstable_all)] // unstable feature: XXX XXX
     #[inline]
     pub fn append(&mut self, buf: &[u8]) {
         assert!(self.remaining() >= buf.len());
 
         // SAFETY: we do not de-initialize any of the elements of the slice
         unsafe {
-            // ADAPTED with WORKAROUND fn to support Rust nightly -> 2022-08-24
-            write_unfilled_buf(self, buf);
+            // ADAPTED with XXX WORKAROUND XXX to support Rust stable (etc.)
+            let buf_as_slice = &*(buf as *const [u8] as *const [MaybeUninit<u8>]);
+            self.unfilled_mut()[..buf.len()].copy_from_slice(buf_as_slice);
         };
 
         // SAFETY: We just added the entire contents of buf to the filled section.
@@ -259,18 +259,4 @@ impl<'a> ReadBuf<'a> {
     pub fn initialized_len(&self) -> usize {
         self.initialized
     }
-}
-
-// WORKAROUND fn to support Rust nightly -> 2022-08-24
-#[cfg(portable_io_unstable_all)] // unstable feature: XXX XXX
-#[rustversion::since(2024-02-16)]
-#[inline]
-unsafe fn write_unfilled_buf(this: &mut ReadBuf, buf: &[u8]) {
-    MaybeUninit::copy_from_slice(&mut this.unfilled_mut()[..buf.len()], buf);
-}
-#[cfg(portable_io_unstable_all)] // unstable feature: XXX XXX
-#[rustversion::before(2024-02-16)]
-#[inline]
-unsafe fn write_unfilled_buf(this: &mut ReadBuf, buf: &[u8]) {
-    MaybeUninit::write_slice(&mut this.unfilled_mut()[..buf.len()], buf);
 }
