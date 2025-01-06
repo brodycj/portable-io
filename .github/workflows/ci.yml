@@ -17,7 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # XXX TODO ADD TESTING WITH RUST STABLE & BETA TO MATRIX HERE (NEED TO SKIP XXX TBD UNSTABLE XXX FEATURES WITH RUST STABLE & BETA)
+          # XXX TODO ADD TESTING WITH RUST MSRV (STABLE) & BETA TO MATRIX HERE
+          # XXX TODO TEST RUST STABLE WITH MACOS & WINDOWS
+          - rust: stable
           - rust: nightly
           - os: macos-latest
             rust: nightly
@@ -32,11 +34,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
+      - run: cargo test --features alloc --all-targets --verbose # SKIP doc tests with no unstable cfg option here
       - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+        if: startsWith(matrix.rust, 'nightly')
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
-        if: (!startsWith(matrix.os, 'windows'))
+        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all
 
@@ -70,8 +74,6 @@ jobs:
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo test --features alloc --no-run
-        # XXX TBD SKIP THIS STEP FOR NOW - XXX TODO RESOLVE ISSUE & RE-ENABLE THIS STEP
-        if: ${{ false }}
         env:
           RUSTFLAGS: --deny warnings
       - run: cargo test --all-features --no-run
