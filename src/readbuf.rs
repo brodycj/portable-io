@@ -40,13 +40,8 @@ impl<'a> ReadBuf<'a> {
     #[inline]
     pub fn new(buf: &'a mut [u8]) -> ReadBuf<'a> {
         let len = buf.len();
-
         // FOR ADAPTED code below
         let buf_ptr = buf as *mut [u8];
-        // XXX TODO NEEDS RATIONALE & UNIT TEST
-        if buf_ptr.is_null() {
-            panic!("XXX");
-        }
 
         ReadBuf {
             //SAFETY: initialized data never becoming uninitialized is an invariant of ReadBuf
