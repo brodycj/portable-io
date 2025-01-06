@@ -677,6 +677,8 @@ impl fmt::Display for Error {
             #[cfg(feature = "os-error")]
             Repr::Os(code) => {
                 // TODO ADD MISSING FUNCTIONALITY
+                // (ignore unused argument for now)
+                _ = code;
                 panic!("MISSING FUNCTIONALITY")
             }
             Repr::Custom(ref c) => c.error.fmt(fmt),

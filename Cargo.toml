@@ -10,7 +10,7 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 
 [dependencies]
 libc = { version = "0.2.169", optional = true, default-features = false }
-rustversion = "1.0.19"
+memchr = { version = "2.7.4", default-features = false }
 
 [features]
 # TODO: finer-grained feature options
@@ -19,3 +19,8 @@ alloc = []
 os-error = []
 # TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY
 unix-iovec = ["dep:libc"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+  'cfg(portable_io_unstable_all)',
+]}

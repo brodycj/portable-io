@@ -1,15 +1,14 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
+//! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
 
 #![no_std]
 #![feature(allocator_api)]
 #![feature(doc_notable_trait)]
-#![feature(maybe_uninit_slice)]
-#![feature(maybe_uninit_write_slice)]
-#![feature(ptr_as_uninit)]
-#![feature(slice_internals)]
-#![feature(specialization)]
+#![feature(min_specialization)]
+// ---
+#![allow(stable_features)]
 #![feature(error_in_core)]
 #![feature(mixed_integer_ops)]
 
@@ -22,7 +21,6 @@ use core::fmt;
 use core::mem::replace;
 use core::ops::{Deref, DerefMut};
 use core::slice;
-use core::slice::memchr;
 use core::str;
 
 extern crate alloc;
