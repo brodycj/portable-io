@@ -72,8 +72,9 @@ jobs:
           # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
           # RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
           RUSTFLAGS: --cfg portable_io_unstable_all
-      # XXX TODO RESOLVE & RE-ENABLE:
-      # - run: cargo test --features alloc --no-run
+      - run: cargo test --features alloc --no-run
+        # XXX TBD SKIP THIS STEP FOR NOW - XXX TODO RESOLVE ISSUE & RE-ENABLE THIS STEP
+        if: ${{ false }}
         # XXX TODO RESOLVE WARNINGS & RE-ENABLE --deny warnings
         # env:
         #   RUSTFLAGS: --deny warnings
