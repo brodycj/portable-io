@@ -1,4 +1,6 @@
+#[cfg(not(feature = "unix-iovec"))]
 pub(crate) mod io_default;
+
 #[cfg(feature = "unix-iovec")]
 mod io_unix_iovec;
 
