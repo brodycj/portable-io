@@ -44,7 +44,7 @@ jobs:
       # XXX TBD test with --all-features but NOT with CFG in RUSTFLAGS - XXX TODO EXPLAIN & DOCUMENT THIS
       - run: cargo test --all-features --all-targets --verbose # SKIP doc tests with no unstable cfg option here
         # XXX XXX QUICK WORKAROUND
-        if: (!startsWith(matrix.rust, 'nightly-2023') && !startsWith(matrix.rust, 'nightly-2022'))
+        if: (!startsWith(matrix.os, 'windows') && !startsWith(matrix.rust, 'nightly-2023') && !startsWith(matrix.rust, 'nightly-2022'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
