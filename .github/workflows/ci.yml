@@ -41,6 +41,10 @@ jobs:
         if: startsWith(matrix.rust, 'nightly')
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all
+      # XXX TBD test with --all-features but NOT with CFG in RUSTFLAGS - XXX TODO EXPLAIN & DOCUMENT THIS
+      - run: cargo test --all-features --all-targets --verbose # SKIP doc tests with no unstable cfg option here
+        # XXX XXX QUICK WORKAROUND
+        if: (!startsWith(matrix.rust, 'nightly-2023') && !startsWith(matrix.rust, 'nightly-2022'))
       - run: cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
@@ -71,6 +75,7 @@ jobs:
       - run: cargo build --features alloc --verbose
         env:
           RUSTFLAGS: --deny warnings
+      # XXX TBD try cargo build with --all-features but NOT with CFG in RUSTFLAGS
       - run: cargo build --all-features --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
@@ -78,6 +83,7 @@ jobs:
       - run: cargo test --features alloc --no-run
         env:
           RUSTFLAGS: --deny warnings
+      # XXX TBD try cargo test --no-run with --all-features but NOT with CFG in RUSTFLAGS
       - run: cargo test --all-features --no-run
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
         env:
