@@ -92,6 +92,7 @@ jobs:
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo test --features alloc --no-run
+        if: (!matrix.unstable-error-in-core)
         env:
           RUSTFLAGS: --deny warnings
       - run: cargo test --all-features --no-run
