@@ -9,21 +9,13 @@
 
 #![no_std]
 // ---
-// XXX TODO ADD RATIONALE FOR KEEPING ALLOW STABLE FEATURES
+// NEEDED to allow `error_in_core` feature, which was stabilized in June 2024
 #![allow(stable_features)]
+// ---
 #![cfg_attr(
-    // XXX TBD RECONSIDER NAMING OF THIS CFG - XXX TBD FINER-GRAINED CFG OPTIONS - ???
-    // XXX TBD ENABLE FOR DOC - ??? ??? ???
     portable_io_unstable_all,
     feature(
         allocator_api,
-        // XXX TBD ???
-        // doc_notable_trait,
-        // maybe_uninit_slice,
-        // maybe_uninit_write_slice,
-        // ptr_as_uninit,
-        // slice_internals,
-        // specialization,
         min_specialization,
         error_in_core,
         mixed_integer_ops,
@@ -64,13 +56,6 @@ mod sys;
 // TODO: support limited features with no use of `alloc` crate
 #[cfg(not(any(doc, feature = "alloc")))]
 compile_error!("`alloc` feature is currently required for this library to build");
-
-// XXX XXX REQUIRE THIS CFG IF ANY XXX FEATURES ARE ENABLED
-// TODO: finer-grained unstable features
-// #[cfg(not(any(doc, portable_io_unstable_all)))]
-// compile_error!(
-//     "`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build"
-// );
 
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
@@ -286,8 +271,7 @@ where
 /// ```
 ///
 /// [`&str`]: prim@str
-// XXX TBD ???
-// #[doc(notable_trait)]
+// TODO: add cfg_attr to document as notable trait
 pub trait Read {
     /// Pull some bytes from this source into the specified buffer, returning
     /// how many bytes were read.
@@ -843,8 +827,7 @@ impl<'a> Deref for IoSlice<'a> {
 /// `write` in a loop until its entire input has been written.
 ///
 /// [`write_all`]: Write::write_all
-// XXX TBD ???
-// #[doc(notable_trait)]
+// TODO: add cfg_attr to document as notable trait
 pub trait Write {
     /// Write a buffer into this writer, returning how many bytes were written.
     ///
