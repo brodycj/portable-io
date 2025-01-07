@@ -31,10 +31,10 @@ jobs:
             os: windows-latest
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
-            unstable-cfg-needed: true # unstable cfg needed to enable previously unstable error_in_core Rust feature
+            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV - nightly
-            unstable-cfg-needed: true # unstable cfg needed to enable previously unstable error_in_core Rust feature
+            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
             test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
@@ -72,9 +72,9 @@ jobs:
             os: windows-latest
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
-            unstable-cfg-needed: true # unstable cfg needed to enable previously unstable error_in_core Rust feature
+            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
           - rust: nightly-2022-08-24 # MSRV - nightly
-            unstable-cfg-needed: true # unstable cfg needed to enable previously unstable error_in_core Rust feature
+            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
