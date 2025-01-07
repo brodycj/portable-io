@@ -32,7 +32,7 @@
 mod tests;
 
 use core::cmp;
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly)
 use core::convert::TryInto;
 use core::fmt;
 use core::mem::replace;
@@ -41,7 +41,7 @@ use core::slice;
 use core::str;
 
 extern crate alloc;
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly)
 use alloc::boxed::Box;
 use alloc::string::String;
 use alloc::vec::Vec;
@@ -1572,7 +1572,7 @@ impl<T: BufRead, U: BufRead> BufRead for Chain<T, U> {
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 impl<T, U> SizeHint for Chain<T, U> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1733,7 +1733,7 @@ impl<T: BufRead> BufRead for Take<T> {
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 impl<T> SizeHint for Take<T> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1775,13 +1775,13 @@ impl<R: Read> Iterator for Bytes<R> {
         }
     }
 
-    #[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+    #[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
     fn size_hint(&self) -> (usize, Option<usize>) {
         SizeHint::size_hint(&self.inner)
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 trait SizeHint {
     fn lower_bound(&self) -> usize;
 
@@ -1792,7 +1792,7 @@ trait SizeHint {
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 impl<T> SizeHint for T {
     #[inline]
     default fn lower_bound(&self) -> usize {
@@ -1805,7 +1805,7 @@ impl<T> SizeHint for T {
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 impl<T> SizeHint for &mut T {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1818,7 +1818,7 @@ impl<T> SizeHint for &mut T {
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 impl<T> SizeHint for Box<T> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1831,7 +1831,7 @@ impl<T> SizeHint for Box<T> {
     }
 }
 
-#[cfg(portable_io_unstable_all)] // unstable feature: size hint - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint (requires Rust nightly) - TODO: update generated docs
 impl SizeHint for &[u8] {
     #[inline]
     fn lower_bound(&self) -> usize {
