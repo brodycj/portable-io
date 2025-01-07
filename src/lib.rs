@@ -14,12 +14,7 @@
 // ---
 #![cfg_attr(
     portable_io_unstable_all,
-    feature(
-        allocator_api,
-        min_specialization,
-        error_in_core,
-        mixed_integer_ops,
-    )
+    feature(allocator_api, min_specialization, error_in_core, mixed_integer_ops)
 )]
 
 #[cfg(test)]
