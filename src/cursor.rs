@@ -9,8 +9,7 @@ use alloc::boxed::Box;
 use alloc::vec::Vec;
 
 use crate::prelude::*;
-use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, SeekFrom};
-use crate::ReadBuf;
+use crate::{self as io, Error, ErrorKind, IoSlice, IoSliceMut, ReadBuf, SeekFrom};
 
 /// A `Cursor` wraps an in-memory buffer and provides it with a
 /// [`Seek`] implementation.
