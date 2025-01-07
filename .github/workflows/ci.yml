@@ -80,18 +80,19 @@ jobs:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
+      - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
-      - run: RUSTFLAGS="--deny warnings" cargo build --features alloc --verbose
+      - run: cross-env RUSTFLAGS="--deny warnings" cargo build --features alloc --verbose
         if: (!matrix.unstable-error-in-core)
       - run: cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
-      - run: RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo build --all-features --verbose
+      - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo build --all-features --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
-      - run: RUSTFLAGS="--deny warnings" cargo test --features alloc --no-run
+      - run: cross-env RUSTFLAGS="--deny warnings" cargo test --features alloc --no-run
         if: (!matrix.unstable-error-in-core)
-      - run: RUSTFLAGS="--deny warnings" cargo test --all-features --no-run
+      - run: cross-env RUSTFLAGS="--deny warnings" cargo test --all-features --no-run
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
-      - run: RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo test --all-features --no-run
+      - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo test --all-features --no-run
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
 
   fmt:
