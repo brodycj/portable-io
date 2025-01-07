@@ -2,6 +2,8 @@
 //! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
+//!
+//! <!-- TODO DOCUMENT CRATE FEATURES & CFG OPTIONS HERE - SHOULD AUTOMATE SYNC WITH README -->
 
 #![no_std]
 // ---
