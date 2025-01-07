@@ -31,23 +31,24 @@ jobs:
             os: windows-latest
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
-            unstable-error-in-core: true # REQUIRES CFG to enable now-stable error_in_core Rust feature
+            unstable-error-in-core: true # REQUIRES unstable CFG to enable previously unstable error_in_core Rust feature in lib.rs
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV - nightly
-            unstable-error-in-core: true # REQUIRES CFG to enable now-stable error_in_core Rust feature
+            unstable-error-in-core: true # REQUIRES unstable CFG to enable previously unstable error_in_core Rust feature in lib.rs
             test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
-      - run: cargo test --features alloc --all-targets --verbose # SKIP doc tests with no unstable cfg option here
+      - run: cargo test --features alloc --all-targets --verbose # (using --all-targets SKIP doc tests expected to fail with no cfg option)
         if: (!matrix.unstable-error-in-core)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --features alloc ${{ matrix.test-options }} --verbose
         if: startsWith(matrix.rust, 'nightly')
-      # NOTE: It is possible to test with --all-features but no unstable cfg option
-      # (must skip doc tests, testing on Windows, and testing with older Rust nightly with error_in_core not stabilized in this case)
-      - run: cargo test --all-features --all-targets --verbose # SKIP doc tests with no unstable cfg option here
+        # XXX TBD UPDATE OR REMOVE THIS EXTRA NOTE ??? ???
+        # NOTE: It is possible to test with --all-features but no unstable cfg option
+        # (must skip doc tests, testing on Windows, and testing with older Rust nightly with error_in_core not stabilized in this case)
+      - run: cargo test --all-features --all-targets --all-targets --verbose # (using --all-targets SKIP doc tests expected to fail with no cfg option)
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
@@ -71,9 +72,9 @@ jobs:
             os: windows-latest
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
-            unstable-error-in-core: true # REQUIRES CFG to enable now-stable error_in_core Rust feature
+            unstable-error-in-core: true # REQUIRES unstable CFG to enable previously unstable error_in_core Rust feature in lib.rs
           - rust: nightly-2022-08-24 # MSRV - nightly
-            unstable-error-in-core: true # REQUIRES CFG to enable now-stable error_in_core Rust feature
+            unstable-error-in-core: true # REQUIRES unstable CFG to enable previously unstable error_in_core Rust feature in lib.rs
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
