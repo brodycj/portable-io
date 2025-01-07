@@ -82,6 +82,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
       - run: cargo build --features alloc --verbose
+        if: (!matrix.unstable-error-in-core)
         env:
           RUSTFLAGS: --deny warnings
       - run: cargo build --all-features --verbose
