@@ -48,7 +48,7 @@ jobs:
         # XXX TBD UPDATE OR REMOVE THIS EXTRA NOTE ??? ???
         # NOTE: It is possible to test with --all-features but no unstable cfg option
         # (must skip doc tests, testing on Windows, and testing with older Rust nightly with error_in_core not stabilized in this case)
-      - run: cargo test --all-features --all-targets --all-targets --verbose # (using --all-targets SKIP doc tests expected to fail with no cfg option)
+      - run: cargo test --all-features --all-targets --verbose # (using --all-targets SKIP doc tests expected to fail with no cfg option)
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
