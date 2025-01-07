@@ -39,9 +39,6 @@ jobs:
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
-      # XXX TBD ??? ??? ??? - XXX TODO REMOVE --version commands
-      - run: node --version
-      - run: npm --version
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
       - run: cargo test --features alloc --all-targets --verbose # SKIP doc tests with no unstable cfg option here
