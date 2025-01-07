@@ -10,11 +10,9 @@ use alloc::string::String;
 use alloc::vec::Vec;
 
 use crate::{
-    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, Seek, SeekFrom, Write,
+    self as io, BufRead, Error, ErrorKind, IoSlice, IoSliceMut, Read, ReadBuf, Seek, SeekFrom,
+    Write,
 };
-// XXX TODO REMOVE CFG CONDITIONS FOR "unstable feature: ReadBuf" - ReadBuf functionality should now work with Rust stable
-// XXX CFG GONE: ... unstable feature: ReadBuf
-use crate::ReadBuf;
 
 // =============================================================================
 // Forwarding implementations
@@ -25,7 +23,6 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).read(buf)
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -41,13 +38,11 @@ impl<R: Read + ?Sized> Read for &mut R {
         (**self).is_read_vectored()
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -128,7 +123,6 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).read(buf)
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         (**self).read_buf(buf)
@@ -144,13 +138,11 @@ impl<R: Read + ?Sized> Read for Box<R> {
         (**self).is_read_vectored()
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         (**self).read_to_end(buf)
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_string(&mut self, buf: &mut String) -> io::Result<usize> {
         (**self).read_to_string(buf)
@@ -251,8 +243,6 @@ impl Read for &[u8] {
         Ok(amt)
     }
 
-    // XXX TBD MISSING UNIT TEST COVERAGE - ???
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_buf(&mut self, buf: &mut ReadBuf<'_>) -> io::Result<()> {
         let amt = cmp::min(buf.remaining(), self.len());
@@ -302,7 +292,6 @@ impl Read for &[u8] {
         Ok(())
     }
 
-    // XXX CFG GONE: ... unstable feature: ReadBuf
     #[inline]
     fn read_to_end(&mut self, buf: &mut Vec<u8>) -> io::Result<usize> {
         buf.extend_from_slice(*self);
