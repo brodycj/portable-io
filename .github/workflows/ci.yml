@@ -87,7 +87,7 @@ jobs:
       - run: cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
       - run: cargo build --all-features --verbose
-        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
+        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
         env:
           RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
       - run: cargo test --features alloc --no-run
