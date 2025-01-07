@@ -16,6 +16,8 @@
     portable_io_unstable_all,
     feature(allocator_api, min_specialization, error_in_core, mixed_integer_ops)
 )]
+// ---
+// TODO: FIX documentation of notable traits (as noted by TODO comments below)
 
 #[cfg(test)]
 mod tests;
