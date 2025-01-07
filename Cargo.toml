@@ -9,9 +9,8 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 """
 
 [features]
-# TODO: finer-grained feature options - XXX TBD ???
+# TODO: finer-grained feature options
 alloc = []
-# XXX TBD DOCUMENT THAT ALL XXX TBD UNSTABLE FEATURES REQUIRE XXX CFG FLAG TO BUILD
 # TODO: DOCUMENT AS UNSTABLE FEATURE with some MISSING FUNCTIONALITY (with known panics)
 os-error = []
 # TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY
