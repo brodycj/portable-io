@@ -42,18 +42,14 @@ jobs:
       - run: rustup default ${{ matrix.rust }}
       - run: cargo test --features alloc --all-targets --verbose # SKIP doc tests with no unstable cfg option here
         if: (!matrix.unstable-error-in-core)
-      - run: cargo test --features alloc ${{ matrix.test-options }} --verbose
+      - run: RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --features alloc ${{ matrix.test-options }} --verbose
         if: startsWith(matrix.rust, 'nightly')
-        env:
-          RUSTFLAGS: --cfg portable_io_unstable_all
       # NOTE: It is possible to test with --all-features but no unstable cfg option
       # (must skip doc tests, testing on Windows, and testing with older Rust nightly with error_in_core not stabilized in this case)
       - run: cargo test --all-features --all-targets --verbose # SKIP doc tests with no unstable cfg option here
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
-      - run: cargo test --all-features ${{ matrix.test-options }} --verbose
+      - run: RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
-        env:
-          RUSTFLAGS: --cfg portable_io_unstable_all
 
   build:
     strategy:
@@ -81,28 +77,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rustup default ${{ matrix.rust }}
-      - run: cargo build --features alloc --verbose
+      - run: RUSTFLAGS="--deny warnings" cargo build --features alloc --verbose
         if: (!matrix.unstable-error-in-core)
-        env:
-          RUSTFLAGS: --deny warnings
       - run: cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
-      - run: cargo build --all-features --verbose
+      - run: RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo build --all-features --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
-        env:
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
-      - run: cargo test --features alloc --no-run
+      - run: RUSTFLAGS="--deny warnings" cargo test --features alloc --no-run
         if: (!matrix.unstable-error-in-core)
-        env:
-          RUSTFLAGS: --deny warnings
-      - run: cargo test --all-features --no-run
+      - run: RUSTFLAGS="--deny warnings" cargo test --all-features --no-run
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-error-in-core)
-        env:
-          RUSTFLAGS: --deny warnings
-      - run: cargo test --all-features --no-run
+      - run: RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo test --all-features --no-run
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
-        env:
-          RUSTFLAGS: --cfg portable_io_unstable_all --deny warnings
 
   fmt:
     strategy:
