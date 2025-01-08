@@ -1,7 +1,7 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
 //! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
-//! <!-- TODO DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
+//! <!-- TODO: DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
 //!
 //! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README; CAN USE CARGO TOOL: cargo-sync-readme -->
 //!
@@ -12,7 +12,7 @@
 
 #![no_std]
 // ---
-// NEEDED to allow `error_in_core` feature, which was stabilized in June 2024
+// NEEDED to allow `error_in_core` & `mixed_integer_ops` features, which were stabilized in June & September 2024
 #![allow(stable_features)]
 // ---
 #![cfg_attr(
