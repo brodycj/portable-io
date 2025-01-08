@@ -24,11 +24,13 @@ jobs:
           - rust: stable
             os: windows-latest
           - rust: '1.81.0' # MSRV - stable
+          # ---
           - rust: nightly
           - rust: nightly
             os: macos-latest
           - rust: nightly
             os: windows-latest
+          # ---
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
             unstable-cfg-needed: true # unstable cfg needed to enable Rust error_in_core feature (stabilized in June 2024)
@@ -63,11 +65,13 @@ jobs:
           - rust: stable
             os: windows-latest
           - rust: '1.81.0' # MSRV - stable
+          # ---
           - rust: nightly
           - rust: nightly
             os: macos-latest
           - rust: nightly
             os: windows-latest
+          # ---
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
             unstable-cfg-needed: true # unstable cfg needed to enable Rust error_in_core feature (stabilized in 2024)
