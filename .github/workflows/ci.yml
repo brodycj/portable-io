@@ -44,9 +44,9 @@ jobs:
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
       # ---
-      - run: cargo test --features alloc --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
+      - run: cargo test --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
         if: (!matrix.unstable-cfg-needed)
-      - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --features alloc ${{ matrix.test-options }} --verbose
+      - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test ${{ matrix.test-options }} --verbose
         if: startsWith(matrix.rust, 'nightly')
       - run: cargo test --all-features --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
@@ -83,14 +83,14 @@ jobs:
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
       # ---
-      - run: cross-env RUSTFLAGS="--deny warnings" cargo build --features alloc --verbose
+      - run: cross-env RUSTFLAGS="--deny warnings" cargo build --verbose
         if: (!matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--deny warnings" cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && startsWith(matrix.rust, 'nightly'))
       # ---
-      - run: cross-env RUSTFLAGS="--deny warnings" cargo test --features alloc --no-run
+      - run: cross-env RUSTFLAGS="--deny warnings" cargo test --no-run
         if: (!matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--deny warnings" cargo test --all-features --no-run
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
