@@ -26,7 +26,7 @@
 mod tests;
 
 use core::cmp;
-#[cfg(portable_io_unstable_all)] // for unstable feature: size hint (requires Rust nightly)
+#[cfg(portable_io_unstable_all)] // for unstable feature: size hint
 use core::convert::TryInto;
 use core::fmt;
 use core::mem::replace;
@@ -35,7 +35,7 @@ use core::slice;
 use core::str;
 
 extern crate alloc;
-#[cfg(portable_io_unstable_all)] // for unstable feature: size hint (requires Rust nightly)
+#[cfg(portable_io_unstable_all)] // for unstable feature: size hint
 use alloc::boxed::Box;
 use alloc::string::String;
 use alloc::vec::Vec;
