@@ -79,7 +79,7 @@ jobs:
       - run: rustup default ${{ matrix.rust }}
       - run: cross-env RUSTFLAGS="--deny warnings" cargo build --features alloc --verbose
         if: (!matrix.unstable-cfg-needed)
-      - run: cargo build --all-features --verbose
+      - run: cross-env RUSTFLAGS="--deny warnings" cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo build --all-features --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
