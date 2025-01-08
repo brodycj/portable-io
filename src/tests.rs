@@ -240,12 +240,14 @@ fn chain_bufread() {
 
 // TODO TEST SIZE HINT WITH WITH MISSING FUNCTIONALITY: empty()
 
+#[cfg(portable_io_unstable_all)] // for unstable feature: size hint optimization
 #[test]
 fn slice_size_hint() {
     let size_hint = (&[1, 2, 3]).bytes().size_hint();
     assert_eq!(size_hint, (3, Some(3)));
 }
 
+#[cfg(portable_io_unstable_all)] // for unstable feature: size hint optimization
 #[test]
 fn take_size_hint() {
     let size_hint = (&[1, 2, 3]).take(2).bytes().size_hint();

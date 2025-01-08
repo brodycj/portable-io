@@ -1,22 +1,32 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
 //! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
-//! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS HERE -->
+//! <!-- TODO: DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
+//!
+//! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README, POSSIBLY USING CARGO TOOL: cargo-sync-readme -->
+//!
+//! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS FROM RUST STD IO LIBRARY CODE -->
+//!
+//! <!-- TODO GENERATED DOCS SHOULD INCLUDE ALL UNSTABLE FEATURES WITH REQUIRED FEATURE & CFG OPTIONS -->
+//! <!-- (SHOULD BE POSSIBLE WITH PROPER DOCS / docs.rs CONFIG) -->
 
 #![no_std]
 // ---
-#![feature(allocator_api)]
-#![feature(doc_notable_trait)]
-#![feature(min_specialization)]
-// ---
+// NEEDED to allow `error_in_core` & `mixed_integer_ops` feature directives, which were stabilized in June & September 2024
 #![allow(stable_features)]
-#![feature(error_in_core)]
-#![feature(mixed_integer_ops)]
+// ---
+// TODO: FIX documentation of notable traits as noted by TODO comments below - requires Rust unstable doc_notable_trait feature
+// ---
+#![cfg_attr(
+    portable_io_unstable_all,
+    feature(allocator_api, min_specialization, error_in_core, mixed_integer_ops)
+)]
 
 #[cfg(test)]
 mod tests;
 
 use core::cmp;
+#[cfg(portable_io_unstable_all)] // for unstable feature: size hint optimization
 use core::convert::TryInto;
 use core::fmt;
 use core::mem::replace;
@@ -25,6 +35,7 @@ use core::slice;
 use core::str;
 
 extern crate alloc;
+#[cfg(portable_io_unstable_all)] // for unstable feature: size hint optimization
 use alloc::boxed::Box;
 use alloc::string::String;
 use alloc::vec::Vec;
@@ -45,12 +56,6 @@ mod sys;
 // TODO: support limited features with no use of `alloc` crate
 #[cfg(not(any(doc, feature = "alloc")))]
 compile_error!("`alloc` feature is currently required for this library to build");
-
-// TODO: finer-grained unstable features
-#[cfg(not(any(doc, portable_io_unstable_all)))]
-compile_error!(
-    "`--cfg portable_io_unstable_all` Rust flag is currently required for this library to build"
-);
 
 #[cfg(all(feature = "unix-iovec", not(unix)))]
 compile_error!("`unix-iovec` feature requires a Unix platform");
@@ -266,7 +271,7 @@ where
 /// ```
 ///
 /// [`&str`]: prim@str
-#[doc(notable_trait)]
+// TODO: add cfg_attr to document as notable trait
 pub trait Read {
     /// Pull some bytes from this source into the specified buffer, returning
     /// how many bytes were read.
@@ -822,7 +827,7 @@ impl<'a> Deref for IoSlice<'a> {
 /// `write` in a loop until its entire input has been written.
 ///
 /// [`write_all`]: Write::write_all
-#[doc(notable_trait)]
+// TODO: add cfg_attr to document as notable trait
 pub trait Write {
     /// Write a buffer into this writer, returning how many bytes were written.
     ///
@@ -1552,6 +1557,7 @@ impl<T: BufRead, U: BufRead> BufRead for Chain<T, U> {
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 impl<T, U> SizeHint for Chain<T, U> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1712,6 +1718,7 @@ impl<T: BufRead> BufRead for Take<T> {
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 impl<T> SizeHint for Take<T> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1753,11 +1760,13 @@ impl<R: Read> Iterator for Bytes<R> {
         }
     }
 
+    #[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
     fn size_hint(&self) -> (usize, Option<usize>) {
         SizeHint::size_hint(&self.inner)
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 trait SizeHint {
     fn lower_bound(&self) -> usize;
 
@@ -1768,6 +1777,7 @@ trait SizeHint {
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 impl<T> SizeHint for T {
     #[inline]
     default fn lower_bound(&self) -> usize {
@@ -1780,6 +1790,7 @@ impl<T> SizeHint for T {
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 impl<T> SizeHint for &mut T {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1792,6 +1803,7 @@ impl<T> SizeHint for &mut T {
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 impl<T> SizeHint for Box<T> {
     #[inline]
     fn lower_bound(&self) -> usize {
@@ -1804,6 +1816,7 @@ impl<T> SizeHint for Box<T> {
     }
 }
 
+#[cfg(portable_io_unstable_all)] // unstable feature: size hint optimization (requires Rust nightly for min_specialization)
 impl SizeHint for &[u8] {
     #[inline]
     fn lower_bound(&self) -> usize {
