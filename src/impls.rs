@@ -1,4 +1,4 @@
-#[cfg(portable_io_unstable_all)] // unstable feature: Vec Write - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: vec writer - requires Rust nightly
 use core::alloc::Allocator;
 use core::cmp;
 use core::fmt;
@@ -367,7 +367,7 @@ impl Write for &mut [u8] {
 
 /// Write is implemented for `Vec<u8>` by appending to the vector.
 /// The vector will grow as needed.
-#[cfg(portable_io_unstable_all)] // unstable feature: Vec Write - requires Rust nightly
+#[cfg(portable_io_unstable_all)] // unstable feature: vec writer - requires Rust nightly
 impl<A: Allocator> Write for Vec<u8, A> {
     #[inline]
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
