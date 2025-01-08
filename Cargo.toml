@@ -10,7 +10,6 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 
 [features]
 # XXX TODO UPDATE CI TO TEST WITH DEFAULT FEATURES
-# XXX TODO UPDATE DOCUMENTATION RE DEFAULT FEATURES
 default = ["alloc"]
 # ---
 alloc = []

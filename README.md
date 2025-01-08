@@ -4,7 +4,7 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 
 ## requirements
 
-- enable `alloc` feature
+- enable `alloc` feature if using this package with no default features
 - Rust stable MSRV: `1.81.0` / nightly MSRV: `nightly-2022-08-24`
 - some of this functionality requires Rust nightly together with unstable configuration `--cfg portable_io_unstable_all` in Rust flags (set `RUSTFLAGS` env variable when running `cargo build` or `cargo test`):
   - impl Write for Vec - uses Rust unstable `allocator_api` feature
