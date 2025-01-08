@@ -15,12 +15,12 @@
 // NEEDED to allow `error_in_core` & `mixed_integer_ops` features, which were stabilized in June & September 2024
 #![allow(stable_features)]
 // ---
+// TODO: FIX documentation of notable traits as noted by TODO comments below - requires Rust unstable doc_notable_trait feature
+// ---
 #![cfg_attr(
     portable_io_unstable_all,
     feature(allocator_api, min_specialization, error_in_core, mixed_integer_ops)
 )]
-// ---
-// TODO: FIX documentation of notable traits (as noted by TODO comments below)
 
 #[cfg(test)]
 mod tests;
