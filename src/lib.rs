@@ -3,7 +3,7 @@
 //!
 //! <!-- TODO: DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
 //!
-//! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README; CAN USE CARGO TOOL: cargo-sync-readme -->
+//! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README, POSSIBLY USING CARGO TOOL: cargo-sync-readme -->
 //!
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS FROM RUST STD IO LIBRARY CODE -->
 //!
@@ -12,7 +12,7 @@
 
 #![no_std]
 // ---
-// NEEDED to allow `error_in_core` & `mixed_integer_ops` features, which were stabilized in June & September 2024
+// NEEDED to allow `error_in_core` & `mixed_integer_ops` feature directives, which were stabilized in June & September 2024
 #![allow(stable_features)]
 // ---
 // TODO: FIX documentation of notable traits as noted by TODO comments below - requires Rust unstable doc_notable_trait feature
