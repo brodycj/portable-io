@@ -31,21 +31,21 @@ jobs:
             os: windows-latest
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
-            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
+            unstable-cfg-needed: true # unstable cfg needed to enable Rust error_in_core feature (stabilized in 2024)
             test-options: --all-targets # SKIP doc tests
           - rust: nightly-2022-08-24 # MSRV - nightly
-            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
+            unstable-cfg-needed: true # unstable cfg needed to enable Rust error_in_core feature (stabilized in 2024)
             test-options: --all-targets # SKIP doc tests
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
-      - run: cargo test --features alloc --all-targets --verbose # (using --all-targets SKIP doc tests expected to fail with no cfg option)
+      - run: cargo test --features alloc --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
         if: (!matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --features alloc ${{ matrix.test-options }} --verbose
         if: startsWith(matrix.rust, 'nightly')
-      - run: cargo test --all-features --all-targets --verbose # (using --all-targets SKIP doc tests expected to fail with no cfg option)
+      - run: cargo test --all-features --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --all-features ${{ matrix.test-options }} --verbose
         if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
@@ -69,9 +69,9 @@ jobs:
             os: windows-latest
           - rust: nightly-2024-07-01
           - rust: nightly-2023-07-01
-            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
+            unstable-cfg-needed: true # unstable cfg needed to enable Rust error_in_core feature (stabilized in 2024)
           - rust: nightly-2022-08-24 # MSRV - nightly
-            unstable-cfg-needed: true # unstable cfg needed to enable error_in_core Rust feature (stabilized in 2024)
+            unstable-cfg-needed: true # unstable cfg needed to enable Rust error_in_core feature (stabilized in 2024)
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
