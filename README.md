@@ -5,7 +5,7 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 ## requirements
 
 - enable `alloc` feature
-- Rust stable MSRV (with no features enabled): `1.81.0` / nightly MSRV: `nightly-2022-08-24`
+- Rust stable MSRV: `1.81.0` / nightly MSRV: `nightly-2022-08-24`
 - some of the functionality requires Rust nightly together with unstable configuration `--cfg portable_io_unstable_all` in Rust flags (set `RUSTFLAGS` env variable when running `cargo build` or `cargo test`)
 - unstable configuration `--cfg portable_io_unstable_all` in Rust flags is required for  Rust nightly pre-`2024-06-09` to enable now-stable error_in_core feature directive
 
