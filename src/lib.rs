@@ -1,12 +1,14 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
 //! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
+//! <!-- TODO DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
+//!
+//! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README; CAN USE CARGO TOOL: cargo-sync-readme -->
+//!
 //! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS FROM RUST STD IO LIBRARY CODE -->
 //!
-//! <!-- TODO DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
-//! <!-- (ADDITIONAL TODO: SHOULD MAINTAIN & VERIFY SYNC WITH README; CAN USE CARGO TOOL: cargo-sync-readme) -->
-//!
 //! <!-- TODO GENERATED DOCS SHOULD INCLUDE ALL UNSTABLE FEATURES WITH REQUIRED FEATURE & CFG OPTIONS -->
+//! <!-- (SHOULD BE POSSIBLE WITH PROPER DOCS / docs.rs configuration) -->
 
 #![no_std]
 // ---
