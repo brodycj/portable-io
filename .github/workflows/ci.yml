@@ -41,6 +41,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
+      # ---
       - run: cargo test --features alloc --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
         if: (!matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --features alloc ${{ matrix.test-options }} --verbose
@@ -48,7 +49,7 @@ jobs:
       - run: cargo test --all-features --all-targets --verbose # using --all-targets to SKIP doc tests (expected to fail with unstable cfg option not enabled)
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all" cargo test --all-features ${{ matrix.test-options }} --verbose
-        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
+        if: (!startsWith(matrix.os, 'windows') && startsWith(matrix.rust, 'nightly'))
 
   build:
     strategy:
@@ -77,18 +78,20 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm install --global cross-env
       - run: rustup default ${{ matrix.rust }}
+      # ---
       - run: cross-env RUSTFLAGS="--deny warnings" cargo build --features alloc --verbose
         if: (!matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--deny warnings" cargo build --all-features --verbose
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo build --all-features --verbose
-        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
+        if: (!startsWith(matrix.os, 'windows') && startsWith(matrix.rust, 'nightly'))
+      # ---
       - run: cross-env RUSTFLAGS="--deny warnings" cargo test --features alloc --no-run
         if: (!matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--deny warnings" cargo test --all-features --no-run
         if: (!startsWith(matrix.os, 'windows') && !matrix.unstable-cfg-needed)
       - run: cross-env RUSTFLAGS="--cfg portable_io_unstable_all --deny warnings" cargo test --all-features --no-run
-        if: (startsWith(matrix.rust, 'nightly') && !startsWith(matrix.os, 'windows'))
+        if: (!startsWith(matrix.os, 'windows') && startsWith(matrix.rust, 'nightly'))
 
   fmt:
     strategy:
