@@ -9,11 +9,16 @@ A subset of Rust `std::io` functionality supported for `no-std`.
 """
 
 [features]
-# TODO: finer-grained feature options
+# XXX TODO UPDATE CI TO TEST WITH DEFAULT FEATURES
+# XXX TODO UPDATE DOCUMENTATION RE DEFAULT FEATURES
+default = ["alloc"]
+# ---
 alloc = []
-# TODO: DOCUMENT AS UNSTABLE FEATURE with some MISSING FUNCTIONALITY (with known panics)
+# ---
+# UNSTABLE FEATURES - TODO MISSING DOCUMENTATION
+# NOTE: os-error feature is MISSING some FUNCTIONALITY, with KNOWN PANICS
 os-error = []
-# TODO: DOCUMENT AS UNSTABLE FEATURE FOR UNIX PLATFORMS ONLY
+# NOTE: unix-iovec is for UNIX PLATFORMS ONLY
 unix-iovec = ["dep:libc"]
 
 [dependencies]
