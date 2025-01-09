@@ -2,7 +2,22 @@
 
 [![Crates.io Version](https://img.shields.io/crates/v/portable-io?style=flat-square)](https://crates.io/crates/portable-io)
 
-A subset of Rust `std::io` functionality supported for `no-std`.
+<!-- XXX TODO CHECK FOR DUPLICATED INFO HERE --->
+
+<!-- XXX TODO CHECK FOR & RESOLVE TODO COMMENTS COPIED FROM lib.rs -->
+
+<!-- cargo-sync-readme start -->
+
+Traits, helpers, and type definitions for core I/O functionality.
+A subset from Rust `std::io` functionality supported for `no-std`.
+
+<!-- TODO: MAINTAIN & VERIFY SYNC WITH README, POSSIBLY USING CARGO TOOL: cargo-sync-readme -->
+
+<!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS FROM RUST STD IO LIBRARY CODE -->
+
+<!-- TODO: CLEANUP AS MANY CARGO DOC WARNINGS AS POSSIBLE & CHECK THIS IN CI -->
+
+<!-- cargo-sync-readme end -->
 
 ## requirements
 

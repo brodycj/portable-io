@@ -1,7 +1,13 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
 //! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
-//! <!-- TODO: DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
+//! ## Features
+//!
+//! XXX TODO
+//!
+//! ## CFG options
+//!
+//! XXX TODO
 //!
 //! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README, POSSIBLY USING CARGO TOOL: cargo-sync-readme -->
 //!
