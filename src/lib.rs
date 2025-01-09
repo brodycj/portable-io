@@ -3,11 +3,16 @@
 //!
 //! ## Features
 //!
-//! XXX TODO
+//! - `alloc` (enabled by default) - mandatory feature - for alloc-related functionality
 //!
 //! ## CFG options
 //!
-//! XXX TODO
+//! - `portable_io_unstable_all` - enable all unstable options:
+//!   - impl Write for Vec - uses Rust unstable `allocator_api` feature
+//!   - size hint optimization for Read iterator - uses Rust unstable `min_specialization` feature
+//!
+//! To enable: use `--cfg portable_io_unstable_all` in Rust flags, set `RUSTFLAGS` env variable
+//! when running `cargo build` or `cargo test` for example.
 //!
 //! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README, POSSIBLY USING CARGO TOOL: cargo-sync-readme -->
 //!
