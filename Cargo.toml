@@ -28,4 +28,6 @@ unexpected_cfgs = { level = "warn", check-cfg = [
   'cfg(portable_io_unstable_all)',
 ]}
 
-# XXX TODO CONFIGURE OPTIONS FOR docs.rs here - CONFIGURE FOR ALL FEATURES & CFG FLAG: --cfg portable_io_unstable_all
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "portable_io_unstable_all"] # (all unstable CFG options)
