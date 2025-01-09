@@ -1,6 +1,7 @@
 # portable-io
 
 [![Crates.io Version](https://img.shields.io/crates/v/portable-io?style=flat-square)](https://crates.io/crates/portable-io)
+[![Crates.io License](https://img.shields.io/crates/l/portable-io)](#license)
 
 <!-- XXX TODO CHECK FOR DUPLICATED INFO HERE --->
 
