@@ -1,5 +1,7 @@
 # portable-io
 
+[![Crates.io Version](https://img.shields.io/crates/v/portable-io?style=flat-square)](https://crates.io/crates/portable-io)
+
 A subset of Rust `std::io` functionality supported for `no-std`.
 
 ## requirements
