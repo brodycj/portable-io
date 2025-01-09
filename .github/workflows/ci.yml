@@ -119,5 +119,5 @@ jobs:
       - run: npm install --global cross-env
       - run: rustup default nightly
       # ---
-      - run: echo "use cargo-sync-readme if `cargo sync-readme --check fails" && cargo sync-readme --check fails
+      - run: echo "use cargo-sync-readme if 'cargo sync-readme --check fails'" && cargo sync-readme --check fails
       - run: cross-env RUSTDOCFLAGS="--cfg portable_io_unstable_all" cargo doc --all-features
