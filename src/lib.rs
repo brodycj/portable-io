@@ -1,14 +1,28 @@
 //! Traits, helpers, and type definitions for core I/O functionality.
 //! A subset from Rust `std::io` functionality supported for `no-std`.
 //!
-//! <!-- TODO: DOCUMENT CRATE FEATURES & CFG OPTIONS HERE -->
+//! **MSRV:**
+//! - stable: `1.81.0`
+//! - nightly: `nightly-2022-08-24`
 //!
-//! <!-- TODO: MAINTAIN & VERIFY SYNC WITH README, POSSIBLY USING CARGO TOOL: cargo-sync-readme -->
+//! NOTE: unstable configuration `--cfg portable_io_unstable_all` in Rust flags is required for Rust nightly
+//! pre-`2024-06-09` to enable `error_in_core` feature directive (stabilized in June 2024).
 //!
-//! <!-- TODO INCLUDE & ADAPT MORE DOC COMMENTS FROM RUST STD IO LIBRARY CODE -->
+//! ## Features
 //!
-//! <!-- TODO GENERATED DOCS SHOULD INCLUDE ALL UNSTABLE FEATURES WITH REQUIRED FEATURE & CFG OPTIONS -->
-//! <!-- (SHOULD BE POSSIBLE WITH PROPER DOCS / docs.rs CONFIG) -->
+//! - `alloc` (enabled by default) - mandatory feature - for alloc-related functionality
+//!
+//! ## CFG options
+//!
+//! - `portable_io_unstable_all` - enable all unstable options:
+//!   - impl Write for Vec - uses Rust unstable `allocator_api` feature
+//!   - size hint optimization for Read iterator - uses Rust unstable `min_specialization` feature
+//!
+//! To enable: use `--cfg portable_io_unstable_all` in Rust flags, set `RUSTFLAGS` env variable
+//! when running `cargo build` or `cargo test` for example.
+//!
+//! <!-- DOC TODO: INCLUDE & ADAPT MORE DOC COMMENTS FROM RUST STD IO LIBRARY CODE -->
+//! <!-- DOC TODO: CLEANUP AS MANY CARGO DOC WARNINGS AS POSSIBLE & CHECK THIS IN CI -->
 
 #![no_std]
 // ---

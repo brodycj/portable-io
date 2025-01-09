@@ -115,5 +115,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: cargo install cargo-sync-readme
+      - run: npm install --global cross-env
       - run: rustup default nightly
-      - run: cargo doc --all-features
+      # ---
+      - run: echo "use cargo-sync-readme if 'cargo sync-readme --check' fails" && cargo sync-readme --check
+      - run: cross-env RUSTDOCFLAGS="--cfg portable_io_unstable_all" cargo doc --all-features
