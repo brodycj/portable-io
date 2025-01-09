@@ -11,6 +11,8 @@
 //! ## Features
 //!
 //! - `alloc` (enabled by default) - mandatory feature - for alloc-related functionality
+//! - `os-error` (unstable feature) - support raw OS errors - with some KNOWN PANICS due to MISSING FUNCTIONALITY
+//! - `unix-iovec` (unstable feature) - use `iovec` from `libc` for data stored in IoSlice & IoSliceMut
 //!
 //! ## CFG options
 //!
