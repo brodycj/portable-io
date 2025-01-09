@@ -367,6 +367,9 @@ impl Write for &mut [u8] {
 
 /// Write is implemented for `Vec<u8>` by appending to the vector.
 /// The vector will grow as needed.
+///
+/// <!-- TODO: use Rust (nightly) doc_cfg feature to document feature & cfg option requirements (if possible) -->
+/// <div class="warning">REQUIRES Rust CFG flag: <code>portable_io_unstable_all</code></div>
 #[cfg(portable_io_unstable_all)] // unstable feature: impl Write for Vec (requires Rust nightly for allocator_api)
 impl<A: Allocator> Write for Vec<u8, A> {
     #[inline]

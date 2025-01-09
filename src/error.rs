@@ -390,7 +390,10 @@ impl Error {
         Self { repr: Repr::SimpleMessage(kind, message) }
     }
 
+    /// <!-- (using compile_fail "code block" to show this message as a failure block) -->
+    /// ```compile_fail
     /// NOT IMPLEMENTED - WILL PANIC WITH "MISSING FUNCTIONALITY" MESSAGE
+    /// ```
     ///
     /// <!-- UPDATED TITLE in this fork to avoid singular vs plural issue - TODO PROPOSE UPDATE IN UPSTREAM RUST -->
     /// # Example code
@@ -402,6 +405,9 @@ impl Error {
     /// let os_error = Error::last_os_error();
     /// println!("last OS error: {:?}", os_error);
     /// ```
+    ///
+    /// <!-- TODO: use Rust (nightly) doc_cfg feature to document feature & cfg option requirements (if possible) -->
+    /// <div class="warning">REQUIRES feature to be enabled: <code>os-error</code></div>
     #[cfg(feature = "os-error")]
     #[must_use]
     #[inline]
@@ -413,6 +419,9 @@ impl Error {
     /// Creates a new instance of an [`Error`] from a particular OS error code.
     ///
     /// <!-- TODO ADD EXAMPLE CODE -->
+    ///
+    /// <!-- TODO: use Rust (nightly) doc_cfg feature to document feature & cfg option requirements (if possible) -->
+    /// <div class="warning">REQUIRES feature to be enabled: <code>os-error</code></div>
     #[cfg(feature = "os-error")]
     #[must_use]
     #[inline]
