@@ -13,7 +13,7 @@ default = ["alloc"]
 # ---
 alloc = []
 # ---
-# UNSTABLE FEATURES - TODO MISSING DOCUMENTATION
+# UNSTABLE FEATURES
 # NOTE: os-error feature is MISSING some FUNCTIONALITY, with KNOWN PANICS
 os-error = []
 # NOTE: unix-iovec is for UNIX PLATFORMS ONLY
