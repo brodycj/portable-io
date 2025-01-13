@@ -16,8 +16,7 @@
 //!
 //! ## CFG options
 //!
-//! - `portable_io_unstable_all` - enable all unstable options:
-//!   - impl Write for Vec - uses Rust unstable `allocator_api` feature
+//! - `portable_io_unstable_all` - enable all unstable option(s):
 //!   - size hint optimization for Read iterator - uses Rust unstable `min_specialization` feature
 //!
 //! To enable: use `--cfg portable_io_unstable_all` in Rust flags, set `RUSTFLAGS` env variable
